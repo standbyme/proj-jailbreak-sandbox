@@ -21,7 +21,8 @@ class ResponseEvaluation(ABC):
 class LlamaGuardPromptEvaluation(PromptEvaluation):
     def __init__(self) -> None:
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        assert torch.cuda.is_available()
+        self.device = "cuda"
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(model_id, device_map=self.device)
         # self.llama_guard_version = LlamaGuardVersion.LLAMA_GUARD_2
@@ -39,7 +40,8 @@ class LlamaGuardPromptEvaluation(PromptEvaluation):
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
     def __init__(self) -> None:
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        assert torch.cuda.is_available()
+        self.device = "cuda"
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(model_id, device_map=self.device)
         # self.llama_guard_version = LlamaGuardVersion.LLAMA_GUARD_2
