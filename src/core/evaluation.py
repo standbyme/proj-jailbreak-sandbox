@@ -37,6 +37,11 @@ class LlamaGuardPromptEvaluation(PromptEvaluation):
         return self.tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True).split("\n")[0] == "unsafe"
 
 
+class PerplexityPromptEvaluation(PromptEvaluation):
+    def evaluate(prompt: str) -> bool:
+        raise NotImplementedError
+
+
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
     def __init__(self) -> None:
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
