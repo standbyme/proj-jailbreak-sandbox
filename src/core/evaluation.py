@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from llama_recipes.inference.prompt_format_utils import build_default_prompt, create_conversation, LlamaGuardVersion, AgentType
+from llama_recipes.inference.prompt_format_utils import build_default_prompt, create_conversation, LlamaGuardVersion, \
+    AgentType
 from typing import List, Tuple
 from enum import Enum
 
 import torch
+
 
 class PromptEvaluation(ABC):
     @abstractmethod
@@ -26,15 +28,13 @@ class LlamaGuardPromptEvaluation(PromptEvaluation):
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(model_id, device_map=self.device)
         # self.llama_guard_version = LlamaGuardVersion.LLAMA_GUARD_2
-    
+
     def evaluate(self, prompt: str) -> bool:
         response = build_default_prompt(AgentType.USER, create_conversation([prompt]))
         input = self.tokenizer([response], return_tensors="pt").to(self.device)
         output = self.model.generate(**input, max_new_tokens=100, pad_token_id=0)
         prompt_len = input['input_ids'].shape[-1]
         return self.tokenizer.decode(output[0][prompt_len:], skip_special_tokens=True).split("\n")[0] == "unsafe"
-
-
 
 
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
@@ -45,7 +45,7 @@ class LlamaGuardResponseEvaluation(ResponseEvaluation):
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(model_id, device_map=self.device)
         # self.llama_guard_version = LlamaGuardVersion.LLAMA_GUARD_2
-    
+
     def evaluate(self, response: str) -> bool:
         response = build_default_prompt(AgentType.AGENT, create_conversation([response]))
         input = self.tokenizer([response], return_tensors="pt").to(self.device)
