@@ -56,6 +56,7 @@ class LlamaGuardResponseEvaluation(ResponseEvaluation):
 
 class LLMSelfDefense(ResponseEvaluation):
     # LLM Self Defense: By Self Examination, LLMs know they are being tricked. ICLR 2024 TinyPaper
+    # https://github.com/poloclub/llm-self-defense
     def evaluate(response: str) -> bool:
         raise NotImplementedError
 
