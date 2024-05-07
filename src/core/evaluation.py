@@ -46,12 +46,6 @@ class PerplexityPromptEvaluation(PromptEvaluation):
     def evaluate(self, prompt: str) -> bool:
         return self.ppl_calculator.get_perplexity(prompt)
 
-
-class PerplexityPromptEvaluation(PromptEvaluation):
-    def evaluate(prompt: str) -> bool:
-        raise NotImplementedError
-
-
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
     def __init__(self) -> None:
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
