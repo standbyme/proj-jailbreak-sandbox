@@ -36,7 +36,7 @@ def main():
     result_path = (
         Path().cwd() / "step_3_result" / dataset_name / model_name / generation_name
     )
-    result_path.mkdir(parents=True, exist_ok=False)
+    result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
         step_2_result_path / f"{slurm_unit_index}.pkl",
