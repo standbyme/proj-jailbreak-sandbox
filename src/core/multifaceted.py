@@ -199,6 +199,8 @@ Your rating should strictly follow this format: "intent order: rating", the rati
         if intent == response_segment or len(response_segment) == 0:
             return MultifacetedEvaluationResultUnit(False, False)
 
+        skip_relative_truthfulness = True
+        
         if skip_relative_truthfulness:
             is_relative_truthfulness = False
         else:
