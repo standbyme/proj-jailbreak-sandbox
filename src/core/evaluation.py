@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import os
 import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from llama_recipes.inference.prompt_format_utils import build_default_prompt, create_conversation, LlamaGuardVersion, \
@@ -7,9 +8,12 @@ from typing import List, Tuple
 from enum import Enum
 from ppl_calculator import PPL_Calculator
 from language_model import Llama3LanguageModel, OpenAILanguageModel
+from multifaceted import MultifacetedEvaluation
 
 import torch
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class PromptEvaluation(ABC):
     @abstractmethod
@@ -47,6 +51,15 @@ class PerplexityPromptEvaluation(PromptEvaluation):
     def evaluate(self, prompt: str) -> bool:
         return self.ppl_calculator.get_perplexity(prompt)
 
+class MultifacetedResponseEvaluation(ResponseEvaluation):
+    def __init__(self) -> None:
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        assert openai_api_key
+        self.multifaceted_evaluation = MultifacetedEvaluation(openai_api_key)
+
+    def evaluate(self, response: str) -> bool:
+        result = self.multifaceted_evaluation.evaluate(None, response)
+        return result.combination_level.safeguard_violation
 
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
     def __init__(self) -> None:
