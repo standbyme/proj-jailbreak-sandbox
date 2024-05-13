@@ -17,15 +17,16 @@ from src.core.evaluation import MultifacetedResponseEvaluation
 
 def handle_intent(pickle_data, response_evaluation, result_path):
     attempts = pickle_data["attempts"]
-
-    checkpoint: List[Optional[Dict]] = []
+    
+    new_attempts: List[Optional[Dict]] = []
+    checkpoint: Dict = {"attempts": new_attempts, "intent": pickle_data["intent"]}
 
     for attempt in attempts:
         evaluation_result = response_evaluation.evaluate(attempt["response"])
         if evaluation_result:
-            checkpoint.append(attempt)
+            new_attempts.append(attempt)
         else:
-            checkpoint.append(None)
+            new_attempts.append(None)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
