@@ -2,6 +2,7 @@ import argparse
 import pickle
 import sys
 from pathlib import Path
+from typing import Dict, List, Optional
 
 
 def add_proj_to_PYTHONPATH():
@@ -17,10 +18,14 @@ from src.core.evaluation import LlamaGuardResponseEvaluation
 def handle_intent(pickle_data, response_evaluation, result_path):
     attempts = pickle_data["attempts"]
 
-    checkpoint = []
+    checkpoint: List[Optional[Dict]] = []
 
     for attempt in attempts:
-        checkpoint.append(response_evaluation.evaluate(attempt["response"]))
+        evaluation_result = response_evaluation.evaluate(attempt["response"])
+        if evaluation_result:
+            checkpoint.append(attempt)
+        else:
+            checkpoint.append(None)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
@@ -34,7 +39,11 @@ def main():
     )
 
     result_path = (
-        Path().cwd() / "step_3_target_response_llamaguard_result" / dataset_name / model_name / generation_name
+        Path().cwd()
+        / "step_3_target_response_label_result"
+        / dataset_name
+        / model_name
+        / generation_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
