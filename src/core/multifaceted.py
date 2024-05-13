@@ -8,7 +8,7 @@ from openai import OpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 from tenacity import retry, stop_after_attempt
 
-from .utils import Cache
+from utils import Cache
 
 
 @dataclasses.dataclass
