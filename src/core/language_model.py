@@ -19,7 +19,7 @@ class HuggingFaceLanguageModel(LanguageModel):
         )
 
     def inference(self, prompt: str) -> str:
-        v = self.pipe(prompt, max_new_tokens=128, repetition_penalty=1.2, do_sample=True)
+        v = self.pipe(prompt, max_new_tokens=128, repetition_penalty=1.2, do_sample=True, num_return_sequences=1)
         assert len(v) == 1
 
         return v[0]["generated_text"]
