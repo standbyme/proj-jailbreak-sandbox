@@ -12,7 +12,7 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.evaluation import LlamaGuardResponseEvaluation
+from src.core.evaluation import MultifacetedResponseEvaluation
 
 
 def handle_intent(pickle_data, response_evaluation, result_path):
@@ -32,7 +32,7 @@ def handle_intent(pickle_data, response_evaluation, result_path):
 
 
 def main():
-    response_evaluation = LlamaGuardResponseEvaluation()
+    response_evaluation = MultifacetedResponseEvaluation()
 
     step_2_result_path = (
         Path().cwd() / "step_2_result" / dataset_name / model_name / generation_name
