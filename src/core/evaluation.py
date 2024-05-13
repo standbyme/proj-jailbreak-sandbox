@@ -58,7 +58,7 @@ class MultifacetedResponseEvaluation(ResponseEvaluation):
         self.multifaceted_evaluation = MultifacetedEvaluation(openai_api_key)
 
     def evaluate(self, response: str) -> bool:
-        result = self.multifaceted_evaluation.evaluate(None, response)
+        result = self.multifaceted_evaluation.evaluate("None", response)
         return result.combination_level.safeguard_violation
 
 class LlamaGuardResponseEvaluation(ResponseEvaluation):
