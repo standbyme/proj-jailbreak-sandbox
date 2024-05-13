@@ -23,7 +23,9 @@ def handle_intent(pickle_data, response_evaluation, result_path):
         if attempt is None:
             checkpoint.append(None)
         else:
-            checkpoint.append(response_evaluation.evaluate(attempt["response"]))
+            responses = attempt["response"]
+            result = any([response_evaluation.evaluate(response) for response in responses])
+            checkpoint.append(result)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)

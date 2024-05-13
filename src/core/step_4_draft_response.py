@@ -25,7 +25,7 @@ def handle_intent(draft_model: HuggingFaceLanguageModel, step_2_pickle_data, ste
             checkpoint["attempts"].append(None)
         else:
             prompt = attempt["prompt"]
-            draft_response = draft_model.inference(prompt)
+            draft_response = [draft_model.inference(prompt) for _ in range(20)]
             # .replace("[INST]", "").replace("[/INST]", "")
             checkpoint["attempts"].append({"prompt": prompt, "response": draft_response})
 
