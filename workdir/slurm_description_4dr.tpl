@@ -8,7 +8,7 @@
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
 #SBATCH --time=04:00:00
-#SBATCH --constraint=A100
+
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G

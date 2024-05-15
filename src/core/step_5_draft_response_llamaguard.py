@@ -11,21 +11,30 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.evaluation import LlamaGuardResponseEvaluation
+from src.core.evaluation import LlamaGuardResponseEvaluation, LlamaGuardPromptEvaluation
 
 
-def handle_intent(pickle_data, response_evaluation, result_path):
+def handle_intent(pickle_data, prompt_evaluation, response_evaluation, result_path):
+    intent = pickle_data["intent"]
     attempts = pickle_data["attempts"]
 
-    checkpoint = []
+    new_attempts = []
+    checkpoint = {"intent": intent, "attempts": new_attempts}
 
     for attempt in attempts:
         if attempt is None:
-            checkpoint.append(None)
+            new_attempts.append(None)
         else:
+            # prompt = attempt["prompt"]
+            # prompt_evaluation_result = prompt_evaluation.evaluate(prompt)
+            # if prompt_evaluation_result:
+            #     checkpoint["attempts"].append(True)
+            #     continue
+            # else:
             responses = attempt["response"]
+            assert isinstance(responses, list)
             result = any([response_evaluation.evaluate(response) for response in responses])
-            checkpoint.append(result)
+            new_attempts.append(result)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
@@ -33,6 +42,7 @@ def handle_intent(pickle_data, response_evaluation, result_path):
 
 def main():
     response_evaluation = LlamaGuardResponseEvaluation()
+    # prompt_evaluation = LlamaGuardPromptEvaluation()
 
     step_4_result_path = (
         Path().cwd() / "step_4_draft_response_result" / dataset_name / model_name / generation_name
@@ -49,7 +59,7 @@ def main():
     ) as f:
         pickle_data = pickle.load(f)
 
-    handle_intent(pickle_data, response_evaluation, result_path)
+    handle_intent(pickle_data, None, response_evaluation, result_path)
 
 
 if __name__ == "__main__":

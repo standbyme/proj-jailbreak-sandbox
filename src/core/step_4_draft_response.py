@@ -14,32 +14,28 @@ add_proj_to_PYTHONPATH()
 from src.core.language_model import HuggingFaceLanguageModel
 
 
-def handle_intent(draft_model: HuggingFaceLanguageModel, step_2_pickle_data, step_3_pickle_data, result_path):
-    intent = step_2_pickle_data["intent"]
-    attempts = step_2_pickle_data["attempts"]
+def handle_intent(draft_model: HuggingFaceLanguageModel, step_3_pickle_data, result_path):
+    intent = step_3_pickle_data["intent"]
+    attempts = step_3_pickle_data["attempts"]
 
     checkpoint = {"intent": intent, "attempts": []}
 
-    for attempt, is_SV in zip(attempts, step_3_pickle_data):
-        if not is_SV:
-            checkpoint["attempts"].append(None)
-        else:
+    for attempt in attempts:
+        if attempt:
             prompt = attempt["prompt"]
             draft_response = [draft_model.inference(prompt) for _ in range(20)]
             # .replace("[INST]", "").replace("[/INST]", "")
             checkpoint["attempts"].append({"prompt": prompt, "response": draft_response})
+        else:
+            checkpoint["attempts"].append(None)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
 
 
 def main():
-    step_2_result_path = (
-        Path().cwd() / "step_2_result" / dataset_name / model_name / generation_name
-    )
-
-    step_3_target_response_llamaguard_result_path = (
-        Path().cwd() / "step_3_target_response_llamaguard_result" / dataset_name / model_name / generation_name
+    step_3_target_response_label_result_path = (
+        Path().cwd() / "step_3_target_response_label_result" / dataset_name / model_name / generation_name
     )
 
     result_path = (
@@ -48,21 +44,15 @@ def main():
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
-        step_2_result_path / f"{slurm_unit_index}.pkl",
-        "rb",
-    ) as f:
-        step_2_pickle_data = pickle.load(f)
-
-    with open(
-        step_3_target_response_llamaguard_result_path / f"{slurm_unit_index}.pkl",
+        step_3_target_response_label_result_path / f"{slurm_unit_index}.pkl",
         "rb",
     ) as f:
         step_3_pickle_data = pickle.load(f)
 
-    draft_model_id = "meta-llama/Meta-Llama-3-8B"
+    draft_model_id = "facebook/opt-125m"
     draft_model = HuggingFaceLanguageModel(draft_model_id)
 
-    handle_intent(draft_model, step_2_pickle_data, step_3_pickle_data, result_path)
+    handle_intent(draft_model, step_3_pickle_data, result_path)
 
 
 if __name__ == "__main__":
