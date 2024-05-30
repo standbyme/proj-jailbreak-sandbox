@@ -18,7 +18,7 @@ class LanguageModel(ABC):
         pass
 
     def warm_up(self):
-        self.inference(["How are you?"])
+        self.inference(["How are you?"], do_sample=True, max_new_tokens=128, num_return_sequences=1)
 
 
 class HuggingFaceLanguageModel(LanguageModel):
