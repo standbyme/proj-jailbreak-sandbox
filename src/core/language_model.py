@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List
 import transformers
 import openai
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
@@ -7,11 +8,17 @@ import torch
 
 class LanguageModel(ABC):
     @abstractmethod
-    def inference(self, prompt: str) -> str:
+    def inference(
+        self,
+        prompts: List[str],
+        do_sample: bool,
+        max_new_tokens: int,
+        num_return_sequences: int,
+    ) -> List[str]:
         pass
 
     def warm_up(self):
-        self.inference("How are you?")
+        self.inference(["How are you?"])
 
 
 class HuggingFaceLanguageModel(LanguageModel):
@@ -21,15 +28,23 @@ class HuggingFaceLanguageModel(LanguageModel):
             "text-generation", model=model_id, device_map="auto", return_full_text=False
         )
 
-    def inference(self, prompt: str, num_return_sequences: int) -> str:
+    def inference(
+        self,
+        prompts: List[str],
+        do_sample: bool,
+        max_new_tokens: int,
+        num_return_sequences: int,
+    ) -> List[str]:
         v = self.pipe(
-            prompt,
-            max_new_tokens=128,
-            repetition_penalty=1.2,
-            do_sample=True,
+            prompts,
+            do_sample=do_sample,
+            max_new_tokens=max_new_tokens,
             num_return_sequences=num_return_sequences,
         )
+        # repetition_penalty=1.2
         assert len(v) == num_return_sequences
+
+        v = list(map(lambda x: x["generated_text"], v))
 
         # v[0]["generated_text"]
         return v
