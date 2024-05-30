@@ -18,11 +18,12 @@ class HuggingFaceLanguageModel(LanguageModel):
             "text-generation", model=model_id, device_map="auto", return_full_text=False
         )
 
-    def inference(self, prompt: str) -> str:
-        v = self.pipe(prompt, max_new_tokens=128, repetition_penalty=1.2, do_sample=True, num_return_sequences=1)
-        assert len(v) == 1
+    def inference(self, prompt: str, num_return_sequences: int) -> str:
+        v = self.pipe(prompt, max_new_tokens=128, repetition_penalty=1.2, do_sample=True, num_return_sequences=num_return_sequences)
+        assert len(v) == num_return_sequences
 
-        return v[0]["generated_text"]
+        # v[0]["generated_text"]
+        return v
 
 
 class Llama3LanguageModel(LanguageModel):

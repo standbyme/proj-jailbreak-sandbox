@@ -26,7 +26,7 @@ def handle_intent(
     for attempt in attempts:
         if attempt:
             prompt = attempt["prompt"]
-            draft_response = [target_model.inference(prompt) for _ in range(20)]
+            response = target_model.inference(prompt)
             # .replace("[INST]", "").replace("[/INST]", "")
             checkpoint["attempts"].append(
                 {"prompt": prompt, "response": draft_response}
