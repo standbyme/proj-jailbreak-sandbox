@@ -15,9 +15,11 @@ from src.core.language_model import HuggingFaceLanguageModel
 from src.core.utils import get_model_id
 
 
-def handle_intent(step_3_pickle_data, result_path, target_model: HuggingFaceLanguageModel):
-    intent = step_3_pickle_data["intent"]
-    attempts = step_3_pickle_data["attempts"]
+def handle_intent(
+    step_1_pickle_data, result_path, target_model: HuggingFaceLanguageModel
+):
+    intent = step_1_pickle_data["intent"]
+    attempts = step_1_pickle_data["attempts"]
 
     checkpoint = {"intent": intent, "attempts": []}
 
@@ -26,7 +28,9 @@ def handle_intent(step_3_pickle_data, result_path, target_model: HuggingFaceLang
             prompt = attempt["prompt"]
             draft_response = [target_model.inference(prompt) for _ in range(20)]
             # .replace("[INST]", "").replace("[/INST]", "")
-            checkpoint["attempts"].append({"prompt": prompt, "response": draft_response})
+            checkpoint["attempts"].append(
+                {"prompt": prompt, "response": draft_response}
+            )
         else:
             checkpoint["attempts"].append(None)
 
@@ -34,14 +38,21 @@ def handle_intent(step_3_pickle_data, result_path, target_model: HuggingFaceLang
         pickle.dump(checkpoint, f)
 
 
-
 def main():
     step_1_jailbreak_generation_result_path = (
-        Path().cwd() / "step_1_result" / dataset_name / target_model_name / generation_name
+        Path().cwd()
+        / "step_1_result"
+        / dataset_name
+        / target_model_name
+        / generation_name
     )
 
     result_path = (
-        Path().cwd() / "step_2_result" / dataset_name / target_model_name / generation_name
+        Path().cwd()
+        / "step_2_result"
+        / dataset_name
+        / target_model_name
+        / generation_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
