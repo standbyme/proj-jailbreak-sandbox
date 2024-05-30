@@ -27,6 +27,3 @@ def get_model_id(model_name: str):
     }
 
     return database[model_name]
-
-def warm_up_model(model: HuggingFaceLanguageModel):
-    model.inference("How are you?")
