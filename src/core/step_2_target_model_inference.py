@@ -12,6 +12,7 @@ def add_proj_to_PYTHONPATH():
 
 add_proj_to_PYTHONPATH()
 from src.core.language_model import HuggingFaceLanguageModel
+from src.core.utils import get_model_id
 
 
 def handle_intent(draft_model: HuggingFaceLanguageModel, step_3_pickle_data, result_path):
@@ -50,10 +51,10 @@ def main():
     ) as f:
         step_1_pickle_data = pickle.load(f)
 
-    target_model_id = "facebook/opt-125m"
+    target_model_id = get_model_id(target_model_name)
     target_model = HuggingFaceLanguageModel(target_model_id)
 
-    handle_intent(draft_model, step_3_pickle_data, result_path)
+    handle_intent(step_1_pickle_data, result_path, target_model)
 
 
 if __name__ == "__main__":
