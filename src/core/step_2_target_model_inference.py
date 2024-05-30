@@ -33,24 +33,25 @@ def handle_intent(draft_model: HuggingFaceLanguageModel, step_3_pickle_data, res
         pickle.dump(checkpoint, f)
 
 
+
 def main():
-    step_3_target_response_label_result_path = (
-        Path().cwd() / "step_3_target_response_label_result" / dataset_name / model_name / generation_name
+    step_1_jailbreak_generation_result_path = (
+        Path().cwd() / "step_1_result" / dataset_name / target_model_name / generation_name
     )
 
     result_path = (
-        Path().cwd() / "step_4_draft_response_result" / dataset_name / model_name / generation_name
+        Path().cwd() / "step_2_result" / dataset_name / target_model_name / generation_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
-        step_3_target_response_label_result_path / f"{slurm_unit_index}.pkl",
+        step_1_jailbreak_generation_result_path / f"{slurm_unit_index}.pkl",
         "rb",
     ) as f:
-        step_3_pickle_data = pickle.load(f)
+        step_1_pickle_data = pickle.load(f)
 
-    draft_model_id = "facebook/opt-125m"
-    draft_model = HuggingFaceLanguageModel(draft_model_id)
+    target_model_id = "facebook/opt-125m"
+    target_model = HuggingFaceLanguageModel(target_model_id)
 
     handle_intent(draft_model, step_3_pickle_data, result_path)
 
@@ -64,7 +65,7 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "--model_name",
+        "--target_model_name",
         type=str,
         required=True,
         choices=["Meta-Llama-3-70B-Instruct-AWQ"],
@@ -84,7 +85,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
-    model_name = args.model_name
+    target_model_name = args.target_model_name
     generation_name = args.generation_name
     dataset_name = args.dataset_name
 

@@ -18,3 +18,12 @@ class Cache:
 
     def save(self):
         pickle.dump(self.cache, open(self.cache_file_name, "wb"))
+
+
+def get_model_id(model_name: str):
+    database = {
+        "opt-125m": "facebook/opt-125m",
+        "Meta-Llama-3-70B-Instruct-AWQ": "TechxGenus/Meta-Llama-3-70B-Instruct-AWQ",
+    }
+
+    return database[model_name]
