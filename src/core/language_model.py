@@ -19,7 +19,13 @@ class HuggingFaceLanguageModel(LanguageModel):
         )
 
     def inference(self, prompt: str, num_return_sequences: int) -> str:
-        v = self.pipe(prompt, max_new_tokens=128, repetition_penalty=1.2, do_sample=True, num_return_sequences=num_return_sequences)
+        v = self.pipe(
+            prompt,
+            max_new_tokens=128,
+            repetition_penalty=1.2,
+            do_sample=True,
+            num_return_sequences=num_return_sequences,
+        )
         assert len(v) == num_return_sequences
 
         # v[0]["generated_text"]
@@ -74,6 +80,10 @@ class OpenAILanguageModel(LanguageModel):
         )
         response = harm_response.choices[0].message.content
         return response
+
+
+def warm_up_model(model: HuggingFaceLanguageModel):
+    model.inference("How are you?")
 
 
 if __name__ == "__main__":
