@@ -32,6 +32,7 @@ def handle_intent(
         responses_list = target_model.inference(prompt_list, do_sample=True, max_new_tokens=256, num_return_sequences=1)
         assert len(responses_list) == 1
         responses = responses_list[0]
+        assert len(responses) == 1
         response = responses[0]
         end_time = time.perf_counter()
         inference_time = end_time - start_time
