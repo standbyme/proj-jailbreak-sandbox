@@ -15,7 +15,7 @@ from src.core.language_model import HuggingFaceLanguageModel
 from src.core.utils import get_model_id
 
 
-def handle_intent(draft_model: HuggingFaceLanguageModel, step_3_pickle_data, result_path):
+def handle_intent(step_3_pickle_data, result_path, target_model: HuggingFaceLanguageModel):
     intent = step_3_pickle_data["intent"]
     attempts = step_3_pickle_data["attempts"]
 
@@ -24,7 +24,7 @@ def handle_intent(draft_model: HuggingFaceLanguageModel, step_3_pickle_data, res
     for attempt in attempts:
         if attempt:
             prompt = attempt["prompt"]
-            draft_response = [draft_model.inference(prompt) for _ in range(20)]
+            draft_response = [target_model.inference(prompt) for _ in range(20)]
             # .replace("[INST]", "").replace("[/INST]", "")
             checkpoint["attempts"].append({"prompt": prompt, "response": draft_response})
         else:
