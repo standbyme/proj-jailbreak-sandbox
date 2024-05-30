@@ -80,7 +80,7 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["GCG", "GE", "AutoDAN"],
+        choices=["GCG", "AutoDAN"],
     )
     parser.add_argument(
         "--dataset_name",
