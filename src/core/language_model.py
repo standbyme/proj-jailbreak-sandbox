@@ -10,6 +10,9 @@ class LanguageModel(ABC):
     def inference(self, prompt: str) -> str:
         pass
 
+    def warm_up(self):
+        self.inference("How are you?")
+
 
 class HuggingFaceLanguageModel(LanguageModel):
     def __init__(self, model_id) -> None:
@@ -80,10 +83,6 @@ class OpenAILanguageModel(LanguageModel):
         )
         response = harm_response.choices[0].message.content
         return response
-
-
-def warm_up_model(model: HuggingFaceLanguageModel):
-    model.inference("How are you?")
 
 
 if __name__ == "__main__":
