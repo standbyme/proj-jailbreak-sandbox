@@ -2,6 +2,7 @@ import argparse
 import pickle
 import sys
 from pathlib import Path
+import time
 
 
 def add_proj_to_PYTHONPATH():
@@ -24,15 +25,16 @@ def handle_intent(
     checkpoint = {"intent": intent, "attempts": []}
 
     for attempt in attempts:
-        if attempt:
-            prompt = attempt["prompt"]
-            response = target_model.inference(prompt)
-            # .replace("[INST]", "").replace("[/INST]", "")
-            checkpoint["attempts"].append(
-                {"prompt": prompt, "response": draft_response}
-            )
-        else:
-            checkpoint["attempts"].append(None)
+        prompt = attempt["prompt"]
+
+        start_time = time.perf_counter()
+        response = target_model.inference(prompt)
+        end_time = time.perf_counter()
+        inference_time = end_time - start_time
+
+        checkpoint["attempts"].append(
+            {"prompt": prompt, "response": response, "time": inference_time}
+        )
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
@@ -64,6 +66,7 @@ def main():
 
     target_model_id = get_model_id(target_model_name)
     target_model = HuggingFaceLanguageModel(target_model_id)
+    target_model.warm_up()
 
     handle_intent(step_1_pickle_data, result_path, target_model)
 
