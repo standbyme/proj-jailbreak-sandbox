@@ -10,11 +10,11 @@ class LanguageModel(ABC):
     @abstractmethod
     def inference(
         self,
-        prompts: List[str],
+        prompt_list: List[str],
         do_sample: bool,
         max_new_tokens: int,
         num_return_sequences: int,
-    ) -> List[str]:
+    ) -> List[List[str]]:
         pass
 
     def warm_up(self):
@@ -30,13 +30,13 @@ class HuggingFaceLanguageModel(LanguageModel):
 
     def inference(
         self,
-        prompts: List[str],
+        prompt_list: List[str],
         do_sample: bool,
         max_new_tokens: int,
         num_return_sequences: int,
-    ) -> List[str]:
+    ) -> List[List[str]]:
         v = self.pipe(
-            prompts,
+            prompt_list,
             do_sample=do_sample,
             max_new_tokens=max_new_tokens,
             num_return_sequences=num_return_sequences,
@@ -44,10 +44,12 @@ class HuggingFaceLanguageModel(LanguageModel):
         # repetition_penalty=1.2
         assert len(v) == num_return_sequences
 
-        v = list(map(lambda x: x["generated_text"], v))
+        result = []
+        for responses in v:
+            result.append(list(map(lambda x: x["generated_text"], responses)))
 
         # v[0]["generated_text"]
-        return v
+        return result
 
 
 class Llama3LanguageModel(LanguageModel):

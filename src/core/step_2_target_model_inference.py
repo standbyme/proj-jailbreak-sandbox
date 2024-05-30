@@ -26,9 +26,13 @@ def handle_intent(
 
     for attempt in attempts:
         prompt = attempt["prompt"]
+        prompt_list = [prompt]
 
         start_time = time.perf_counter()
-        response = target_model.inference(prompt)
+        responses_list = target_model.inference(prompt_list, do_sample=True, max_new_tokens=256, num_return_sequences=1)
+        assert len(responses_list) == 1
+        responses = responses_list[0]
+        response = responses[0]
         end_time = time.perf_counter()
         inference_time = end_time - start_time
 
