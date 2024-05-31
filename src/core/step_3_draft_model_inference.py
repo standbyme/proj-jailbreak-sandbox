@@ -64,6 +64,7 @@ def main():
         / target_model_name
         / generation_name
         / draft_model_name
+        / f"{draft_number}"
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
@@ -112,6 +113,11 @@ if __name__ == "__main__":
         required=True,
         choices=["RPAB"],
     )
+    parser.add_argument(
+        "--draft_number",
+        type=int,
+        required=True,
+    )
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
@@ -119,5 +125,6 @@ if __name__ == "__main__":
     draft_model_name = args.draft_model_name
     generation_name = args.generation_name
     dataset_name = args.dataset_name
+    draft_number = args.draft_number
 
     main()
