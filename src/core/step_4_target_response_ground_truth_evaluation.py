@@ -66,7 +66,7 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "--model_name",
+        "--target_model_name",
         type=str,
         required=True,
         choices=["Meta-Llama-3-70B-Instruct-AWQ"],
@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
-    model_name = args.model_name
+    target_model_name = args.target_model_name
     generation_name = args.generation_name
     dataset_name = args.dataset_name
 
