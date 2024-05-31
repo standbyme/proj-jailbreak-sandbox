@@ -59,10 +59,11 @@ def main():
 
     result_path = (
         Path().cwd()
-        / "step_2_result"
+        / "step_3_result"
         / dataset_name
         / target_model_name
         / generation_name
+        / draft_model_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
@@ -72,11 +73,11 @@ def main():
     ) as f:
         step_1_pickle_data = pickle.load(f)
 
-    target_model_id = get_model_id(target_model_name)
-    target_model = HuggingFaceLanguageModel(target_model_id)
-    target_model.warm_up()
+    draft_model_id = get_model_id(draft_model_name)
+    draft_model = HuggingFaceLanguageModel(draft_model_id)
+    draft_model.warm_up()
 
-    handle_intent(step_1_pickle_data, result_path, target_model)
+    handle_intent(step_1_pickle_data, result_path, draft_model)
 
 
 if __name__ == "__main__":
