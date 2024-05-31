@@ -31,17 +31,17 @@ def handle_intent(
 
         start_time = time.perf_counter()
         responses_list = target_model.inference(
-            prompt_list, do_sample=True, max_new_tokens=128, num_return_sequences=1
+            prompt_list, do_sample=True, max_new_tokens=128, num_return_sequences=draft_number
         )
-        assert len(responses_list) == 1
-        responses = responses_list[0]
-        assert len(responses) == 1
-        response = responses[0]
         end_time = time.perf_counter()
         inference_time = end_time - start_time
 
+        assert len(responses_list) == 1
+        responses = responses_list[0]
+        assert len(responses) == draft_number
+
         checkpoint["attempts"].append(
-            {"prompt": prompt, "response": response, "time": inference_time}
+            {"prompt": prompt, "responses": responses, "time": inference_time}
         )
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
