@@ -3,6 +3,7 @@ import pickle
 import sys
 from pathlib import Path
 import time
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():
@@ -24,7 +25,7 @@ def handle_intent(
 
     checkpoint = {"intent": intent, "attempts": []}
 
-    for attempt in attempts:
+    for attempt in tqdm(attempts):
         prompt = attempt["prompt"]
         prompt_list = [prompt]
 
