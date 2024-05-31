@@ -35,20 +35,22 @@ class HuggingFaceLanguageModel(LanguageModel):
         max_new_tokens: int,
         num_return_sequences: int,
     ) -> List[List[str]]:
+        batch_size = len(prompt_list) * num_return_sequences
         v = self.pipe(
             prompt_list,
+            batch_size=batch_size,
             do_sample=do_sample,
             max_new_tokens=max_new_tokens,
             num_return_sequences=num_return_sequences,
         )
         # repetition_penalty=1.2
-        assert len(v) == num_return_sequences
+        assert len(v) == batch_size
 
         result = []
         for responses in v:
+            assert len(responses) == num_return_sequences
             result.append(list(map(lambda x: x["generated_text"], responses)))
 
-        # v[0]["generated_text"]
         return result
 
 
