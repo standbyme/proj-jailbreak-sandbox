@@ -22,4 +22,8 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --draft_model_name opt-125m-AWQ --draft_number 20
+/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --draft_model_name opt-125m-AWQ --draft_number 25
+
+/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --draft_model_name opt-125m-AWQ --draft_number 30
+
+/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --draft_model_name opt-125m-AWQ --draft_number 35
