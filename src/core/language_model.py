@@ -44,7 +44,7 @@ class HuggingFaceLanguageModel(LanguageModel):
             num_return_sequences=num_return_sequences,
         )
         # repetition_penalty=1.2
-        assert len(v) == batch_size
+        assert len(v) == len(prompt_list)
 
         result = []
         for responses in v:
