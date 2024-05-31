@@ -3,6 +3,7 @@ import pickle
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():
@@ -15,18 +16,14 @@ add_proj_to_PYTHONPATH()
 from src.core.evaluation import MultifacetedResponseEvaluation
 
 
-def handle_intent(pickle_data, response_evaluation, result_path):
-    attempts = pickle_data["attempts"]
-    
-    new_attempts: List[Optional[Dict]] = []
-    checkpoint: Dict = {"attempts": new_attempts, "intent": pickle_data["intent"]}
+def handle_intent(step_2_pickle_data, result_path, response_evaluation):
+    attempts = step_2_pickle_data["attempts"]
 
-    for attempt in attempts:
+    checkpoint: List[bool] = []
+
+    for attempt in tqdm(attempts):
         evaluation_result = response_evaluation.evaluate(attempt["response"])
-        if evaluation_result:
-            new_attempts.append(attempt)
-        else:
-            new_attempts.append(None)
+        checkpoint.append(evaluation_result)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
@@ -36,14 +33,18 @@ def main():
     response_evaluation = MultifacetedResponseEvaluation()
 
     step_2_result_path = (
-        Path().cwd() / "step_2_result" / dataset_name / model_name / generation_name
+        Path().cwd()
+        / "step_2_result"
+        / dataset_name
+        / target_model_name
+        / generation_name
     )
 
     result_path = (
         Path().cwd()
-        / "step_3_target_response_label_result"
+        / "step_4_result"
         / dataset_name
-        / model_name
+        / target_model_name
         / generation_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
@@ -52,9 +53,9 @@ def main():
         step_2_result_path / f"{slurm_unit_index}.pkl",
         "rb",
     ) as f:
-        pickle_data = pickle.load(f)
+        step_2_pickle_data = pickle.load(f)
 
-    handle_intent(pickle_data, response_evaluation, result_path)
+    handle_intent(step_2_pickle_data, result_path, response_evaluation)
 
 
 if __name__ == "__main__":
