@@ -59,14 +59,14 @@ def get_guard(guard_name) -> PromptResponseBatchEvaluation:
     if guard_name == "LlamaGuardPrompt":
         v = LlamaGuardPromptResponseBatchEvaluation()
         v.set_is_consider_response(False)
-        return v
     elif guard_name == "LlamaGuardPromptResponse":
         v = LlamaGuardPromptResponseBatchEvaluation()
         v.set_is_consider_response(True)
-        return v
     else:
         raise ValueError(f"Unknown guard_name: {guard_name}")
-
+    
+    v.warmup()
+    return v
 
 def main():
     guard = get_guard(guard_name)
