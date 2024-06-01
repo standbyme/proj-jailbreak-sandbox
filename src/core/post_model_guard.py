@@ -12,7 +12,9 @@ class PromptResponseBatchEvaluation(ABC):
         pass
 
 class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
-    def __init__(self) -> None:
+    def __init__(self, is_consider_response: bool) -> None:
+        self.is_consider_response = is_consider_response
+
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
         assert torch.cuda.is_available()
 
@@ -28,19 +30,19 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
         self.evaluate("Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g", ["Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g"]*10)
 
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
-        if len(responses) == 0:
-            chats = [
-                [
-                    {"role": "user", "content": prompt},
-                ]
-            ]
-        else:
+        if self.is_consider_response:
             chats = [
                 [
                     {"role": "user", "content": prompt},
                     {"role": "assistant", "content": response},
                 ]
             for response in responses]
+        else:
+            chats = [
+                [
+                    {"role": "user", "content": prompt},
+                ]
+            ]
 
         model_inputs = self.tokenizer.apply_chat_template(
             chats, padding=True, return_tensors="pt", return_dict=True
