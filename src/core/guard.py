@@ -11,6 +11,10 @@ class PromptResponseBatchEvaluation(ABC):
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         pass
 
+    @abstractmethod
+    def warmup(self):
+        pass
+
 class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
     def __init__(self, is_consider_response: bool) -> None:
         self.is_consider_response = is_consider_response
