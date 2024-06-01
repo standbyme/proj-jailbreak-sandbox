@@ -2,6 +2,7 @@ import argparse
 import pickle
 import sys
 from pathlib import Path
+import time
 from typing import List
 from tqdm import tqdm
 
@@ -13,24 +14,62 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.evaluation import MultifacetedResponseEvaluation
+from src.core.guard import (
+    PromptResponseBatchEvaluation,
+    LlamaGuardPromptResponseBatchEvaluation,
+)
 
 
-def handle_intent(step_2_pickle_data, result_path, response_evaluation):
+def handle_intent(
+    step_2_pickle_data, result_path, guard: PromptResponseBatchEvaluation
+):
+    intent = step_2_pickle_data["intent"]
     attempts = step_2_pickle_data["attempts"]
 
-    checkpoint: List[bool] = []
+    checkpoint = {"intent": intent, "attempts": []}
 
     for attempt in tqdm(attempts):
-        evaluation_result = response_evaluation.evaluate(attempt["response"])
-        checkpoint.append(evaluation_result)
+        prompt = attempt["prompt"]
+        response = attempt["response"]
+
+        assert isinstance(prompt, str)
+        assert isinstance(response, str)
+
+        start_time = time.perf_counter()
+        evaluation_result = guard.evaluate(prompt, [response])
+        end_time = time.perf_counter()
+        guard_time = end_time - start_time
+
+        assert len(evaluation_result) == 1
+        label = evaluation_result[0]
+
+        v = {
+            "prompt": prompt,
+            "response": response,
+            "label": label,
+            "time": guard_time,
+        }
+        checkpoint["attempts"].append(v)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
 
 
+def get_guard(guard_name) -> PromptResponseBatchEvaluation:
+    if guard_name == "LlamaGuardPrompt":
+        v = LlamaGuardPromptResponseBatchEvaluation()
+        v.set_is_consider_response(False)
+        return v
+    elif guard_name == "LlamaGuardPromptResponse":
+        v = LlamaGuardPromptResponseBatchEvaluation()
+        v.set_is_consider_response(True)
+        return v
+    else:
+        raise ValueError(f"Unknown guard_name: {guard_name}")
+
+
 def main():
-    response_evaluation = MultifacetedResponseEvaluation()
+    guard = get_guard(guard_name)
 
     step_2_result_path = (
         Path().cwd()
@@ -56,7 +95,7 @@ def main():
     ) as f:
         step_2_pickle_data = pickle.load(f)
 
-    handle_intent(step_2_pickle_data, result_path, response_evaluation)
+    handle_intent(step_2_pickle_data, result_path, guard)
 
 
 if __name__ == "__main__":
