@@ -62,9 +62,8 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
 
         result = []
         for output in outputs:
-            splitted_output = output.split('[INST]')
-            assert len(splitted_output) == 2
-            v= splitted_output[1].strip().startswith("unsafe")
+            splitted_output = output.split('[/INST]')
+            v= splitted_output[-1].strip().startswith("unsafe")
             result.append(v)
 
         return result
