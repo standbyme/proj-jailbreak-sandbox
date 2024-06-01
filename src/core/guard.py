@@ -28,7 +28,8 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
         self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, device_map=self.device)
 
     def set_is_consider_response(self, is_consider_response: bool):
-        assert self.is_consider_response is bool
+        assert isinstance(is_consider_response, bool)
+        
         self.is_consider_response = is_consider_response
 
     def warmup(self):
