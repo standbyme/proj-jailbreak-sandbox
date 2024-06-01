@@ -17,13 +17,26 @@ from src.core.evaluation import MultifacetedResponseEvaluation
 
 
 def handle_intent(step_2_pickle_data, result_path, response_evaluation):
+    intent = step_2_pickle_data["intent"]
     attempts = step_2_pickle_data["attempts"]
 
-    checkpoint: List[bool] = []
+    checkpoint = {"intent": intent, "attempts": []}
 
     for attempt in tqdm(attempts):
-        evaluation_result = response_evaluation.evaluate(attempt["response"])
-        checkpoint.append(evaluation_result)
+        prompt = attempt["prompt"]
+        response = attempt["response"]
+
+        assert isinstance(prompt, str)
+        assert isinstance(response, str)
+
+        label = response_evaluation.evaluate(response)
+
+        v = {
+            "prompt": prompt,
+            "response": response,
+            "label": label,
+        }
+        checkpoint["attempts"].append(v)
 
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
