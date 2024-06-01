@@ -16,8 +16,8 @@ class PromptResponseBatchEvaluation(ABC):
         pass
 
 class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
-    def __init__(self, is_consider_response: bool) -> None:
-        self.is_consider_response = is_consider_response
+    def __init__(self) -> None:
+        self.is_consider_response = None
 
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
         assert torch.cuda.is_available()
@@ -30,10 +30,16 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
 
         self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, device_map=self.device)
 
+    def set_is_consider_response(self, is_consider_response: bool):
+        assert self.is_consider_response is bool
+        self.is_consider_response = is_consider_response
+
     def warmup(self):
         self.evaluate("Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g", ["Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g"]*10)
 
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
+        assert self.is_consider_response is not None
+
         if self.is_consider_response:
             chats = [
                 [
