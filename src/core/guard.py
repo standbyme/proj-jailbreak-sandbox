@@ -1,9 +1,6 @@
 from abc import ABC, abstractmethod
-import os
-import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from typing import List, Tuple
-from enum import Enum
+from typing import List
 import torch
 
 class PromptResponseBatchEvaluation(ABC):
