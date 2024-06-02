@@ -28,23 +28,23 @@ def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
 
     for attempt in tqdm(attempts):
         prompt = attempt["prompt"]
-        response = attempt["response"]
+        responses: List[str] = attempt["responses"]
 
         assert isinstance(prompt, str)
-        assert isinstance(response, str)
+        assert isinstance(responses, list)
 
         start_time = time.perf_counter()
-        evaluation_result = guard.evaluate(prompt, [response])
+        evaluation_result = guard.evaluate(prompt, responses)
         end_time = time.perf_counter()
         guard_time = end_time - start_time
 
-        assert len(evaluation_result) == 1
-        label = evaluation_result[0]
+        assert len(evaluation_result) == len(responses)
+        labels = evaluation_result
 
         v = {
             "prompt": prompt,
-            "response": response,
-            "label": label,
+            "responses": responses,
+            "labels": labels,
             "time": guard_time,
         }
         checkpoint["attempts"].append(v)
