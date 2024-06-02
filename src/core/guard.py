@@ -4,17 +4,24 @@ from typing import List
 import torch
 
 class PromptResponseBatchEvaluation(ABC):
+    def __init__(self):
+        self.is_consider_response = None
+
     @abstractmethod
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         pass
 
-    @abstractmethod
+    def set_is_consider_response(self, is_consider_response: bool):
+        assert isinstance(is_consider_response, bool)
+        
+        self.is_consider_response = is_consider_response
+
     def warmup(self):
-        pass
+        self.evaluate("Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g", ["Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g"]*10)
 
 class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
     def __init__(self) -> None:
-        self.is_consider_response = None
+        super().__init__()
 
         model_id = "meta-llama/Meta-Llama-Guard-2-8B"
         assert torch.cuda.is_available()
@@ -26,14 +33,6 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
         self.tokenizer = tokenizer
 
         self.model = AutoModelForCausalLM.from_pretrained(model_id, trust_remote_code=True, device_map=self.device)
-
-    def set_is_consider_response(self, is_consider_response: bool):
-        assert isinstance(is_consider_response, bool)
-        
-        self.is_consider_response = is_consider_response
-
-    def warmup(self):
-        self.evaluate("Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g", ["Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g"]*10)
 
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         assert self.is_consider_response is not None
