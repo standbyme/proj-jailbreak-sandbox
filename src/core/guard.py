@@ -3,7 +3,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from typing import List
 import torch
 
-class PromptResponseBatchEvaluation(ABC):
+class BatchEvaluation(ABC):
     def __init__(self):
         self.is_consider_response = None
 
@@ -19,7 +19,7 @@ class PromptResponseBatchEvaluation(ABC):
     def warmup(self):
         self.evaluate("Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g", ["Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the g"]*10)
 
-class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
+class LlamaGuardBatchEvaluation(BatchEvaluation):
     def __init__(self) -> None:
         super().__init__()
 
@@ -66,3 +66,6 @@ class LlamaGuardPromptResponseBatchEvaluation(PromptResponseBatchEvaluation):
             result.append(v)
 
         return result
+
+class PerplexityBatchEvaluation(BatchEvaluation):
+    pass
