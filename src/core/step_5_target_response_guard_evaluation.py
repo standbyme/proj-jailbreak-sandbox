@@ -17,6 +17,7 @@ add_proj_to_PYTHONPATH()
 from src.core.guard import (
     BatchEvaluation,
     LlamaGuardBatchEvaluation,
+    PerplexityBatchEvaluation
 )
 
 
@@ -62,6 +63,8 @@ def get_guard(guard_name) -> BatchEvaluation:
     elif guard_name == "LlamaGuardPromptResponse":
         v = LlamaGuardBatchEvaluation()
         v.set_is_consider_response(True)
+    elif guard_name == "PerplexityGuardPrompt":
+        v = PerplexityBatchEvaluation()
     else:
         raise ValueError(f"Unknown guard_name: {guard_name}")
     
@@ -128,7 +131,7 @@ if __name__ == "__main__":
         "--guard_name",
         type=str,
         required=True,
-        choices=["LlamaGuardPrompt", "LlamaGuardPromptResponse"],
+        choices=["LlamaGuardPrompt", "LlamaGuardPromptResponse", "PerplexityGuardPrompt"],
     )
 
     args = parser.parse_args()
