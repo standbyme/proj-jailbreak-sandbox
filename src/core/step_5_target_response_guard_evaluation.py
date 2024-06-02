@@ -15,13 +15,13 @@ def add_proj_to_PYTHONPATH():
 
 add_proj_to_PYTHONPATH()
 from src.core.guard import (
-    PromptResponseBatchEvaluation,
-    LlamaGuardPromptResponseBatchEvaluation,
+    BatchEvaluation,
+    LlamaGuardBatchEvaluation,
 )
 
 
 def handle_intent(
-    step_2_pickle_data, result_path, guard: PromptResponseBatchEvaluation
+    step_2_pickle_data, result_path, guard: BatchEvaluation
 ):
     intent = step_2_pickle_data["intent"]
     attempts = step_2_pickle_data["attempts"]
@@ -55,12 +55,12 @@ def handle_intent(
         pickle.dump(checkpoint, f)
 
 
-def get_guard(guard_name) -> PromptResponseBatchEvaluation:
+def get_guard(guard_name) -> BatchEvaluation:
     if guard_name == "LlamaGuardPrompt":
-        v = LlamaGuardPromptResponseBatchEvaluation()
+        v = LlamaGuardBatchEvaluation()
         v.set_is_consider_response(False)
     elif guard_name == "LlamaGuardPromptResponse":
-        v = LlamaGuardPromptResponseBatchEvaluation()
+        v = LlamaGuardBatchEvaluation()
         v.set_is_consider_response(True)
     else:
         raise ValueError(f"Unknown guard_name: {guard_name}")
