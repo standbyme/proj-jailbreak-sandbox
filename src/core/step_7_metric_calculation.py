@@ -16,43 +16,39 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.guard import (
-    BatchEvaluation,
-    # LlamaGuardBatchEvaluation,
-)
 
 
-def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
-    intent = step_3_pickle_data["intent"]
-    attempts = step_3_pickle_data["attempts"]
+# def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
+#     intent = step_3_pickle_data["intent"]
+#     attempts = step_3_pickle_data["attempts"]
 
-    checkpoint = {"intent": intent, "attempts": []}
+#     checkpoint = {"intent": intent, "attempts": []}
 
-    for attempt in tqdm(attempts):
-        prompt = attempt["prompt"]
-        responses: List[str] = attempt["responses"]
+#     for attempt in tqdm(attempts):
+#         prompt = attempt["prompt"]
+#         responses: List[str] = attempt["responses"]
 
-        assert isinstance(prompt, str)
-        assert isinstance(responses, list)
+#         assert isinstance(prompt, str)
+#         assert isinstance(responses, list)
 
-        start_time = time.perf_counter()
-        evaluation_result = guard.evaluate(prompt, responses)
-        end_time = time.perf_counter()
-        guard_time = end_time - start_time
+#         start_time = time.perf_counter()
+#         evaluation_result = guard.evaluate(prompt, responses)
+#         end_time = time.perf_counter()
+#         guard_time = end_time - start_time
 
-        assert len(evaluation_result) == len(responses)
-        labels = evaluation_result
+#         assert len(evaluation_result) == len(responses)
+#         labels = evaluation_result
 
-        v = {
-            "prompt": prompt,
-            "responses": responses,
-            "labels": labels,
-            "time": guard_time,
-        }
-        checkpoint["attempts"].append(v)
+#         v = {
+#             "prompt": prompt,
+#             "responses": responses,
+#             "labels": labels,
+#             "time": guard_time,
+#         }
+#         checkpoint["attempts"].append(v)
 
-    with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
-        pickle.dump(checkpoint, f)
+#     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
+#         pickle.dump(checkpoint, f)
 
 
 def read_step_2_result(step_2_result_path):
@@ -155,18 +151,28 @@ def read_step_6_result(step_6_result_path, draft_number: int):
             df = pd.DataFrame(attempts)
             df_list.append(df)
 
-    concat_df = pd.concat(df_list, ignore_index=True)
-    renamed_concat_df = concat_df.rename(
+    df = pd.concat(df_list, ignore_index=True)
+    df = df.rename(
         columns={
-            "labels": f"guard_sandbox_{draft_number}_label",
+            # "labels": f"guard_sandbox_{draft_number}_label",
             "time": f"guard_sandbox_{draft_number}_time",
         }
     )
 
-    return renamed_concat_df
+    def generate_guard_sandbox_label(row):
+        assert len(row["labels"]) == draft_number
+        return any(row["labels"])
+
+    df[f"guard_sandbox_{draft_number}_label"] = df.apply(
+        generate_guard_sandbox_label, axis=1
+    )
+
+    df = df.drop(columns=["labels"])
+
+    return df
 
 
-def transformation(
+def concatenation(
     step_2_result_path,
     step_3_result_path,
     step_4_result_path,
@@ -216,18 +222,38 @@ def transformation(
         step_6_result = step_6_result.drop(columns=["prompt", "responses"])
         step_6_result_list.append(step_6_result)
 
-    step_2_result = step_2_result.drop(columns=["prompt"])
+    step_2_result = step_2_result.drop(columns=["prompt", "response"])
+    for step_3_result in step_3_result_list:
+        step_3_result.drop(columns=["prompt", "responses"], inplace=True)
 
     # concat all results by columns
     result = pd.concat(
-        [step_2_result] + step_3_result_list + [step_4_result] + step_5_result_list + step_6_result_list,
+        [step_2_result]
+        + step_3_result_list
+        + [step_4_result]
+        + step_5_result_list
+        + step_6_result_list,
         axis=1,
     )
 
     return result
 
+
+def transformation(concatenation_result: pd.DataFrame):
+    def generate_ground_truth_LlamaGuard_label(row):
+        return (
+            row["guard_LlamaGuardPrompt_label"]
+            or row["guard_LlamaGuardPromptResponse_label"]
+        )
+
+    concatenation_result["ground_truth_LlamaGuard_label"] = concatenation_result.apply(
+        generate_ground_truth_LlamaGuard_label, axis=1
+    )
+
+
 def reduction(transformation_result: pd.DataFrame):
     pass
+
 
 def main():
     for dataset_name in ["RPAB"]:
@@ -279,15 +305,16 @@ def main():
                     result_path = Path().cwd() / "step_7_result"
                     result_path.mkdir(parents=True, exist_ok=True)
 
-                    transformation_result = transformation(
+                    concatenation_result = concatenation(
                         step_2_result_path,
                         step_3_result_path,
                         step_4_result_path,
                         step_5_result_path,
                         step_6_result_path,
                     )
-
-                    reduction_result = reduction(transformation_result)
+                    transformation_result = transformation(concatenation_result)
+                    print(concatenation_result)
+                    # reduction_result = reduction(transformation_result)
 
 
 if __name__ == "__main__":
