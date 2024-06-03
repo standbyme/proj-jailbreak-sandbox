@@ -54,6 +54,7 @@ def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
 
+
 def read_step_2_result(step_2_result_path):
     df_list = []
 
@@ -68,28 +69,30 @@ def read_step_2_result(step_2_result_path):
             df_list.append(df)
 
     concat_df = pd.concat(df_list, ignore_index=True)
-    renamed_concat_df = concat_df.rename(columns={"label": "ground_truth_GPT_label"})
+    renamed_concat_df = concat_df.rename(
+        columns={"time": "target_model_inference_time"}
+    )
 
     return renamed_concat_df
 
-def read_step_3_result(step_6_result_path, draft_number: int):
+
+def read_step_3_result(step_3_result_path, draft_number: int):
     df_list = []
 
     for intent_index in range(intent_number):
         with open(
-            step_6_result_path / f"{draft_number}" / f"{intent_index}.pkl",
+            step_3_result_path / f"{draft_number}" / f"{intent_index}.pkl",
             "rb",
         ) as f:
-            step_6_pickle_data = pickle.load(f)
-            attempts = step_6_pickle_data["attempts"]
+            step_3_pickle_data = pickle.load(f)
+            attempts = step_3_pickle_data["attempts"]
             df = pd.DataFrame(attempts)
             df_list.append(df)
 
     concat_df = pd.concat(df_list, ignore_index=True)
     renamed_concat_df = concat_df.rename(
         columns={
-            "labels": f"guard_sandbox_{draft_number}_label",
-            "time": f"guard_sandbox_{draft_number}_time",
+            "time": f"draft_model_{draft_number}_inference_time",
         }
     )
 
@@ -162,27 +165,45 @@ def read_step_6_result(step_6_result_path, draft_number: int):
 
     return renamed_concat_df
 
-def verify_result(step_2_result: pd.DataFrame, step_x_result: pd.DataFrame):
+
+def verify_result_for_2_4_5(step_2_result: pd.DataFrame, step_x_result: pd.DataFrame):
     assert step_2_result.shape[0] == step_x_result.shape[0]
     assert step_2_result["prompt"].equals(step_x_result["prompt"])
     assert step_2_result["response"].equals(step_x_result["response"])
 
-    return True
+
+def verify_result_for_3_6(step_3_result: pd.DataFrame, step_x_result: pd.DataFrame):
+    assert step_3_result.shape[0] == step_x_result.shape[0]
+    assert step_3_result["prompt"].equals(step_x_result["prompt"])
+    assert step_3_result["responses"].equals(step_x_result["response"])
 
 
 def handle(step_4_result_path, step_5_result_path, step_6_result_path, result_path):
+    step_2_result = read_step_2_result(step_2_result_path)
+
+    step_3_result_list = []
+    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+        step_3_result = read_step_6_result(step_3_result_path, draft_number)
+        step_3_result_list.append(step_3_result)
+
     step_4_result = read_step_4_result(step_4_result_path)
+    verify_result_for_2_4_5(step_2_result, step_4_result)
 
     step_5_result_list = []
-    for guard_name in ["LlamaGuardPrompt", "LlamaGuardPromptResponse", "PerplexityGuardPrompt"]:
+    for guard_name in [
+        "LlamaGuardPrompt",
+        "LlamaGuardPromptResponse",
+        "PerplexityGuardPrompt",
+    ]:
         step_5_result = read_step_5_result(step_5_result_path, guard_name)
+        verify_result_for_2_4_5(step_2_result, step_5_result)
         step_5_result_list.append(step_5_result)
 
     step_6_result_list = []
-    for draft_number in [5,10,15,20,25,30,35]:
+    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
         step_6_result = read_step_6_result(step_6_result_path, draft_number)
+        verify_result_for_3_6(step_3_result, step_6_result)
         step_6_result_list.append(step_6_result)
-
 
 
 def main():
