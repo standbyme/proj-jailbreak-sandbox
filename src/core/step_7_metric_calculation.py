@@ -326,7 +326,7 @@ def transformation(concatenation_result: pd.DataFrame):
     # guard_NA
     concatenation_result["guard_NA_label"] = False
     # concatenation_result["guard_NA_time"] = 0
-    # concatenation_result["guard_NA_total_time"] = 0
+    concatenation_result["guard_NA_total_time"] = 0
 
 
 def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
