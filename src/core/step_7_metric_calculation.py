@@ -58,17 +58,24 @@ def main():
     guard.set_is_consider_response(True)
     guard.warmup()
 
-    step_3_result_path = (
+    step_4_result_path = (
         Path().cwd()
-        / "step_3_result"
+        / "step_4_result"
         / dataset_name
         / target_model_name
         / generation_name
-        / draft_model_name
-        / f"{draft_number}"
     )
 
-    result_path = (
+    step_5_result_path = (
+        Path().cwd()
+        / "step_5_result"
+        / dataset_name
+        / target_model_name
+        / generation_name
+        / guard_name
+    )
+
+    step_6_result_path = (
         Path().cwd()
         / "step_6_result"
         / dataset_name
@@ -90,12 +97,6 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--slurm_unit_index",
-        type=int,
-        required=True,
-    )
     parser.add_argument(
         "--target_model_name",
         type=str,
@@ -108,30 +109,21 @@ if __name__ == "__main__":
         required=True,
         choices=["GCG", "AutoDAN"],
     )
+    
     parser.add_argument(
-        "--dataset_name",
+        "--generation_name",
         type=str,
         required=True,
-        choices=["RPAB"],
+        choices=["GCG", "AutoDAN"],
     )
-    parser.add_argument(
-        "--draft_model_name",
-        type=str,
-        required=True,
-        choices=["opt-125m-AWQ"],
-    )
-    parser.add_argument(
-        "--draft_number",
-        type=int,
-        required=True,
-    )
-
     args = parser.parse_args()
-    slurm_unit_index = args.slurm_unit_index
+
     target_model_name = args.target_model_name
     generation_name = args.generation_name
-    dataset_name = args.dataset_name
-    draft_model_name = args.draft_model_name
-    draft_number = args.draft_number
+
+    # slurm_unit_index = args.slurm_unit_index
+    # dataset_name = args.dataset_name
+    # draft_model_name = args.draft_model_name
+    # draft_number = args.draft_number
 
     main()
