@@ -226,6 +226,9 @@ def transformation(
 
     return result
 
+def reduction(transformation_result: pd.DataFrame):
+    pass
+
 def main():
     for dataset_name in ["RPAB"]:
         for target_model_name in ["Meta-Llama-3-70B-Instruct-AWQ"]:
@@ -276,13 +279,15 @@ def main():
                     result_path = Path().cwd() / "step_7_result"
                     result_path.mkdir(parents=True, exist_ok=True)
 
-                    transformation_df = transformation(
+                    transformation_result = transformation(
                         step_2_result_path,
                         step_3_result_path,
                         step_4_result_path,
                         step_5_result_path,
                         step_6_result_path,
                     )
+
+                    reduction_result = reduction(transformation_result)
 
 
 if __name__ == "__main__":
