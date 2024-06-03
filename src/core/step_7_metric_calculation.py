@@ -438,7 +438,14 @@ def main():
                         / draft_model_name
                     )
 
-                    result_path = Path().cwd() / "step_7_result"
+                    result_path = (
+                        Path().cwd()
+                        / "step_7_result"
+                        / dataset_name
+                        / target_model_name
+                        / generation_name
+                        / draft_model_name
+                    )
                     result_path.mkdir(parents=True, exist_ok=True)
 
                     concatenation_result = concatenation(
@@ -450,9 +457,12 @@ def main():
                     )
                     transformation_result = transformation(concatenation_result)
 
-                    for ground_truth_column in ["ground_truth_GPT_label", "ground_truth_LlamaGuard_label"]:
-                        reduction_result = reduction(transformation_result, ground_truth_column)
-                        reduction_result.to_csv(result_path / f"{ground_truth_column}.csv", index=False)
+                    for ground_truth in ["GPT", "LlamaGuard"]:
+                        ground_truth_column = f"ground_truth_{ground_truth}_label"
+                        reduction_result = reduction(
+                            transformation_result, ground_truth_column
+                        )
+                        reduction_result.to_pickle(result_path / f"{ground_truth}.pkl")
 
 
 if __name__ == "__main__":
