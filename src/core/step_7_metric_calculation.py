@@ -154,7 +154,6 @@ def read_step_6_result(step_6_result_path, draft_number: int):
     df = pd.concat(df_list, ignore_index=True)
     df = df.rename(
         columns={
-            # "labels": f"guard_sandbox_{draft_number}_label",
             "time": f"guard_sandbox_{draft_number}_time",
         }
     )
@@ -250,6 +249,80 @@ def transformation(concatenation_result: pd.DataFrame):
         generate_ground_truth_LlamaGuard_label, axis=1
     )
 
+    # guard_LlamaGuardPrompt_total_time
+    def generate_guard_LlamaGuardPrompt_total_time(row):
+        return row["guard_LlamaGuardPrompt_time"]
+
+    concatenation_result["guard_LlamaGuardPrompt_total_time"] = (
+        concatenation_result.apply(generate_guard_LlamaGuardPrompt_total_time, axis=1)
+    )
+
+    # guard_LlamaGuardPromptResponse_total_time
+    def generate_guard_LlamaGuardPromptResponse_total_time(row):
+        return (
+            row["guard_LlamaGuardPromptResponse_time"]
+            + row["target_model_inference_time"]
+        )
+
+    concatenation_result["guard_LlamaGuardPromptResponse_total_time"] = (
+        concatenation_result.apply(
+            generate_guard_LlamaGuardPromptResponse_total_time, axis=1
+        )
+    )
+
+    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+
+        def generate_guard_sandbox_total_time(row):
+            return (
+                row[f"guard_sandbox_{draft_number}_time"]
+                + row[f"draft_model_{draft_number}_inference_time"]
+            )
+
+        concatenation_result[f"guard_sandbox_{draft_number}_total_time"] = (
+            concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
+        )
+
+    # guard_PerplexityGuardPrompt_total_time
+    def generate_guard_PerplexityGuardPrompt_total_time(row):
+        return row["guard_PerplexityGuardPrompt_time"]
+
+    concatenation_result["guard_PerplexityGuardPrompt_total_time"] = (
+        concatenation_result.apply(
+            generate_guard_PerplexityGuardPrompt_total_time, axis=1
+        )
+    )
+
+    # guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_label
+    def generate_guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_label(row):
+        return (
+            row["guard_LlamaGuardPrompt_label"]
+            or row["guard_LlamaGuardPromptResponse_label"]
+        )
+
+    concatenation_result[
+        "guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_label"
+    ] = concatenation_result.apply(
+        generate_guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_label, axis=1
+    )
+
+    # guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_total_time
+    def generate_guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_total_time(row):
+        total_time = row["guard_LlamaGuardPrompt_time"]
+        
+        if row["guard_LlamaGuardPrompt_label"]:
+            pass
+        else:
+            total_time += row["target_model_inference_time"]
+            total_time += row["guard_LlamaGuardPromptResponse_time"]
+        
+        return total_time
+
+    concatenation_result[
+        "guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_total_time"
+    ] = concatenation_result.apply(
+        generate_guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_total_time, axis=1
+    )
+
 
 def reduction(transformation_result: pd.DataFrame):
     pass
@@ -313,7 +386,7 @@ def main():
                         step_6_result_path,
                     )
                     transformation_result = transformation(concatenation_result)
-                    print(concatenation_result)
+                    # print(concatenation_result[["guard_sandbox_20_label", "ground_truth_GPT_label"]])
                     # reduction_result = reduction(transformation_result)
 
 
