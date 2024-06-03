@@ -166,28 +166,29 @@ def read_step_6_result(step_6_result_path, draft_number: int):
     return renamed_concat_df
 
 
-def verify_result_for_2_4_5(step_2_result: pd.DataFrame, step_x_result: pd.DataFrame):
-    assert step_2_result.shape[0] == step_x_result.shape[0]
-    assert step_2_result["prompt"].equals(step_x_result["prompt"])
-    assert step_2_result["response"].equals(step_x_result["response"])
-
-
-def verify_result_for_3_6(step_3_result: pd.DataFrame, step_x_result: pd.DataFrame):
-    assert step_3_result.shape[0] == step_x_result.shape[0]
-    assert step_3_result["prompt"].equals(step_x_result["prompt"])
-    assert step_3_result["responses"].equals(step_x_result["response"])
-
-
-def handle(step_4_result_path, step_5_result_path, step_6_result_path, result_path):
+def transformation(
+    step_2_result_path,
+    step_3_result_path,
+    step_4_result_path,
+    step_5_result_path,
+    step_6_result_path,
+):
     step_2_result = read_step_2_result(step_2_result_path)
 
     step_3_result_list = []
     for draft_number in [5, 10, 15, 20, 25, 30, 35]:
-        step_3_result = read_step_6_result(step_3_result_path, draft_number)
+        step_3_result = read_step_3_result(step_3_result_path, draft_number)
+
+        assert step_2_result.shape[0] == step_3_result.shape[0]
+        assert step_2_result["prompt"].equals(step_3_result["prompt"])
+
         step_3_result_list.append(step_3_result)
 
     step_4_result = read_step_4_result(step_4_result_path)
-    verify_result_for_2_4_5(step_2_result, step_4_result)
+    assert step_2_result.shape[0] == step_4_result.shape[0]
+    assert step_2_result["prompt"].equals(step_4_result["prompt"])
+    assert step_2_result["response"].equals(step_4_result["response"])
+    step_4_result = step_4_result.drop(columns=["prompt", "response"])
 
     step_5_result_list = []
     for guard_name in [
@@ -196,21 +197,57 @@ def handle(step_4_result_path, step_5_result_path, step_6_result_path, result_pa
         "PerplexityGuardPrompt",
     ]:
         step_5_result = read_step_5_result(step_5_result_path, guard_name)
-        verify_result_for_2_4_5(step_2_result, step_5_result)
+
+        assert step_2_result.shape[0] == step_5_result.shape[0]
+        assert step_2_result["prompt"].equals(step_5_result["prompt"])
+        assert step_2_result["response"].equals(step_5_result["response"])
+
+        step_5_result = step_5_result.drop(columns=["prompt", "response"])
         step_5_result_list.append(step_5_result)
 
     step_6_result_list = []
-    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+    for i, draft_number in enumerate([5, 10, 15, 20, 25, 30, 35]):
         step_6_result = read_step_6_result(step_6_result_path, draft_number)
-        verify_result_for_3_6(step_3_result, step_6_result)
+
+        assert step_3_result_list[i].shape[0] == step_6_result.shape[0]
+        assert step_3_result_list[i]["prompt"].equals(step_6_result["prompt"])
+        assert step_3_result_list[i]["responses"].equals(step_6_result["responses"])
+
+        step_6_result = step_6_result.drop(columns=["prompt", "responses"])
         step_6_result_list.append(step_6_result)
 
+    step_2_result = step_2_result.drop(columns=["prompt"])
+
+    # concat all results by columns
+    result = pd.concat(
+        [step_2_result] + step_3_result_list + [step_4_result] + step_5_result_list + step_6_result_list,
+        axis=1,
+    )
+
+    return result
 
 def main():
     for dataset_name in ["RPAB"]:
         for target_model_name in ["Meta-Llama-3-70B-Instruct-AWQ"]:
             for generation_name in ["AutoDAN"]:
                 for draft_model_name in ["opt-125m-AWQ"]:
+                    step_2_result_path = (
+                        Path().cwd()
+                        / "step_2_result"
+                        / dataset_name
+                        / target_model_name
+                        / generation_name
+                    )
+
+                    step_3_result_path = (
+                        Path().cwd()
+                        / "step_3_result"
+                        / dataset_name
+                        / target_model_name
+                        / generation_name
+                        / draft_model_name
+                    )
+
                     step_4_result_path = (
                         Path().cwd()
                         / "step_4_result"
@@ -238,11 +275,13 @@ def main():
 
                     result_path = Path().cwd() / "step_7_result"
                     result_path.mkdir(parents=True, exist_ok=True)
-                    handle(
+
+                    transformation_df = transformation(
+                        step_2_result_path,
+                        step_3_result_path,
                         step_4_result_path,
                         step_5_result_path,
                         step_6_result_path,
-                        result_path,
                     )
 
 
