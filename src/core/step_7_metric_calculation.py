@@ -352,15 +352,19 @@ def handle_setting(
     # generate is_defense_successful column based on ground_truth_column (True) and guard_label_column (True)
     temp["is_defense_successful"] = temp[ground_truth_column] & temp[guard_label_column]
 
-    # total_time_for_successful_defense is the sum of guard_total_time_column for all successful defenses
-    total_time_for_successful_defense = temp[temp["is_defense_successful"]][
+    # average_time_for_successful_defense is the average of guard_total_time_column for all successful defenses
+    average_time_for_successful_defense = temp[temp["is_defense_successful"]][
         guard_total_time_column
-    ].sum()
+    ].mean()
+
+    # total_time_for_successful_defense = temp[temp["is_defense_successful"]][
+    #     guard_total_time_column
+    # ].sum()
 
     return {
         "guard_name": guard_name,
         "ASR": ASR,
-        "total_time_for_successful_defense": total_time_for_successful_defense,
+        "average_time_for_successful_defense": average_time_for_successful_defense,
     }
 
 
