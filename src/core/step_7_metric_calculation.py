@@ -239,6 +239,8 @@ def concatenation(
 
 
 def transformation(concatenation_result: pd.DataFrame):
+    concatenation_result = concatenation_result.copy()
+
     def generate_ground_truth_LlamaGuard_label(row):
         return (
             row["guard_LlamaGuardPrompt_label"]
@@ -328,6 +330,8 @@ def transformation(concatenation_result: pd.DataFrame):
     # concatenation_result["guard_NA_time"] = 0
     concatenation_result["guard_NA_total_time"] = 0
 
+    return concatenation_result
+
 
 def handle_setting(
     transformation_result: pd.DataFrame,
@@ -367,7 +371,7 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
     ]
 
     rows = []
-    for guard_name in [
+    for guard_name in tqdm([
         "NA",
         "LlamaGuardPrompt",
         "LlamaGuardPromptResponse",
@@ -380,14 +384,15 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
         "sandbox_25",
         "sandbox_30",
         "sandbox_35",
-    ]:
+    ]):
         row = handle_setting(
             transformation_result,
             ground_truth_column,
             guard_name,
         )
         rows.append(row)
-    v = pd.DataFrame(rows, index="guard_name")
+    v = pd.DataFrame(rows)
+    v = v.set_index("guard_name")
     return v
 
 
