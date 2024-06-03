@@ -109,13 +109,6 @@ if __name__ == "__main__":
         required=True,
         choices=["GCG", "AutoDAN"],
     )
-    
-    parser.add_argument(
-        "--generation_name",
-        type=str,
-        required=True,
-        choices=["GCG", "AutoDAN"],
-    )
     args = parser.parse_args()
 
     target_model_name = args.target_model_name
