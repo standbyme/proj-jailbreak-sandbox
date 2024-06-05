@@ -18,39 +18,6 @@ def add_proj_to_PYTHONPATH():
 add_proj_to_PYTHONPATH()
 
 
-# def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
-#     intent = step_3_pickle_data["intent"]
-#     attempts = step_3_pickle_data["attempts"]
-
-#     checkpoint = {"intent": intent, "attempts": []}
-
-#     for attempt in tqdm(attempts):
-#         prompt = attempt["prompt"]
-#         responses: List[str] = attempt["responses"]
-
-#         assert isinstance(prompt, str)
-#         assert isinstance(responses, list)
-
-#         start_time = time.perf_counter()
-#         evaluation_result = guard.evaluate(prompt, responses)
-#         end_time = time.perf_counter()
-#         guard_time = end_time - start_time
-
-#         assert len(evaluation_result) == len(responses)
-#         labels = evaluation_result
-
-#         v = {
-#             "prompt": prompt,
-#             "responses": responses,
-#             "labels": labels,
-#             "time": guard_time,
-#         }
-#         checkpoint["attempts"].append(v)
-
-#     with open(result_path / f"{slurm_unit_index}.pkl", "wb") as f:
-#         pickle.dump(checkpoint, f)
-
-
 def read_step_2_result(step_2_result_path):
     df_list = []
 
@@ -375,20 +342,22 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
     ]
 
     rows = []
-    for guard_name in tqdm([
-        "NA",
-        "LlamaGuardPrompt",
-        "LlamaGuardPromptResponse",
-        "LlamaGuardPrompt_and_LlamaGuardPromptResponse",
-        "PerplexityGuardPrompt",
-        "sandbox_5",
-        "sandbox_10",
-        "sandbox_15",
-        "sandbox_20",
-        "sandbox_25",
-        "sandbox_30",
-        "sandbox_35",
-    ]):
+    for guard_name in tqdm(
+        [
+            "NA",
+            "LlamaGuardPrompt",
+            "LlamaGuardPromptResponse",
+            "LlamaGuardPrompt_and_LlamaGuardPromptResponse",
+            "PerplexityGuardPrompt",
+            "sandbox_5",
+            "sandbox_10",
+            "sandbox_15",
+            "sandbox_20",
+            "sandbox_25",
+            "sandbox_30",
+            "sandbox_35",
+        ]
+    ):
         row = handle_setting(
             transformation_result,
             ground_truth_column,
