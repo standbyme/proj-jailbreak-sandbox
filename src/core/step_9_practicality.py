@@ -27,11 +27,9 @@ def handle_intent(
     prompt = intent
     draft_number = 25
     # use draft_model get 35 responses for intent
-    responses_list = draft_model.inference(
-        [prompt], do_sample=True, max_new_tokens=128, num_return_sequences=draft_number
+    responses = draft_model.inference(
+        prompt, do_sample=True, max_new_tokens=128, num_return_sequences=draft_number
     )
-    assert len(responses_list) == 1
-    responses = responses_list[0]
     assert len(responses) == draft_number
 
     # use guard to evaluate the responses

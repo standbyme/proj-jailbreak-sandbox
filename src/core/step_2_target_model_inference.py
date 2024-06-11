@@ -27,14 +27,11 @@ def handle_intent(
 
     for attempt in tqdm(attempts):
         prompt = attempt["prompt"]
-        prompt_list = [prompt]
 
         start_time = time.perf_counter()
-        responses_list = target_model.inference(
-            prompt_list, do_sample=True, max_new_tokens=128, num_return_sequences=1
+        responses = target_model.inference(
+            prompt, do_sample=True, max_new_tokens=128, num_return_sequences=1
         )
-        assert len(responses_list) == 1
-        responses = responses_list[0]
         assert len(responses) == 1
         response = responses[0]
         end_time = time.perf_counter()
