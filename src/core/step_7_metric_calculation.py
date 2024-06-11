@@ -328,9 +328,13 @@ def handle_setting(
     #     guard_total_time_column
     # ].sum()
 
+    # DSR is the ratio of the number of successful defense to the total number of ground_truth_column (True)
+    DSR = temp["is_defense_successful"].sum() / temp[ground_truth_column].sum()
+
     return {
         "guard_name": guard_name,
         "ASR": ASR,
+        "DSR": DSR,
         "average_time_for_successful_defense": average_time_for_successful_defense,
     }
 
