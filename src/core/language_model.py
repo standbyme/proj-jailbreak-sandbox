@@ -10,15 +10,15 @@ class LanguageModel(ABC):
     @abstractmethod
     def inference(
         self,
-        prompt_list: List[str],
+        prompt: str,
         do_sample: bool,
         max_new_tokens: int,
         num_return_sequences: int,
-    ) -> List[List[str]]:
+    ) -> List[str]:
         pass
 
     def warm_up(self):
-        self.inference(["How are you?"], do_sample=True, max_new_tokens=128, num_return_sequences=1)
+        self.inference("How are you?", do_sample=True, max_new_tokens=128, num_return_sequences=2)
 
 
 class HuggingFaceLanguageModel(LanguageModel):
@@ -30,26 +30,23 @@ class HuggingFaceLanguageModel(LanguageModel):
 
     def inference(
         self,
-        prompt_list: List[str],
+        prompt: str,
         do_sample: bool,
         max_new_tokens: int,
         num_return_sequences: int,
-    ) -> List[List[str]]:
-        batch_size = len(prompt_list) * num_return_sequences
+    ) -> List[str]:
+        batch_size = num_return_sequences
         v = self.pipe(
-            prompt_list,
+            prompt,
             batch_size=batch_size,
             do_sample=do_sample,
             max_new_tokens=max_new_tokens,
             num_return_sequences=num_return_sequences,
         )
         # repetition_penalty=1.2
-        assert len(v) == len(prompt_list)
 
-        result = []
-        for responses in v:
-            assert len(responses) == num_return_sequences
-            result.append(list(map(lambda x: x["generated_text"], responses)))
+        assert len(v) == num_return_sequences
+        result = list(map(lambda x: x["generated_text"], v))
 
         return result
 
