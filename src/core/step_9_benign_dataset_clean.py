@@ -34,7 +34,7 @@ def handle_dataset(
 
             evaluation_result = evaluation_results[0]
 
-            if evaluation_result:
+            if not evaluation_result:
                 result.append(intent)
 
     result_file_path = result_path / dataset_file_path.name
