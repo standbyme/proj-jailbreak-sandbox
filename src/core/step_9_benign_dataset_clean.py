@@ -1,3 +1,4 @@
+import argparse
 import pickle
 import sys
 from pathlib import Path
@@ -18,14 +19,14 @@ from src.core.guard import (
 )
 
 
-def handle_benchmark_dataset_prompts_file(
-    benchmark_dataset_prompts_file_path: Path, result_path: Path, guard: BatchEvaluation
+def handle_dataset(
+    dataset_file_path: Path, result_path: Path, guard: BatchEvaluation
 ):
-    tc.assertEqual(benchmark_dataset_prompts_file_path.suffix, ".pkl")
+    tc.assertEqual(dataset_file_path.suffix, ".pkl")
 
     result = []
 
-    with open(benchmark_dataset_prompts_file_path, "rb") as f:
+    with open(dataset_file_path, "rb") as f:
         intents = pickle.load(f)
         for intent in tqdm(intents):
             evaluation_results = guard.evaluate(intent, [])
@@ -36,7 +37,7 @@ def handle_benchmark_dataset_prompts_file(
             if evaluation_result:
                 result.append(intent)
 
-    result_file_path = result_path / benchmark_dataset_prompts_file_path.name
+    result_file_path = result_path / dataset_file_path.name
     with open(result_file_path, "wb") as f:
         pickle.dump(result, f)
 
@@ -46,17 +47,30 @@ def main():
     guard.set_is_consider_response(False)
     guard.warmup()
 
-    benchmark_dataset_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/prompts")
+    dataset_dir_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/prompts")
 
     result_path = Path().cwd() / "step_9_result"
     result_path.mkdir(parents=True, exist_ok=True)
 
-    benchmark_dataset_prompts_file_path_list = list(benchmark_dataset_path.iterdir())
+    dataset_file_path_list = list(dataset_dir_path.iterdir())
+    dataset_file_path_list.sort()
 
-    for file_path in tqdm(benchmark_dataset_prompts_file_path_list[:2]):
-        handle_benchmark_dataset_prompts_file(file_path, result_path, guard)
+    file_path = dataset_file_path_list[slurm_unit_index]
+
+    handle_dataset(file_path, result_path, guard)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--slurm_unit_index",
+        type=int,
+        required=True,
+    )
+
+    args = parser.parse_args()
+    slurm_unit_index = args.slurm_unit_index
+
     tc = unittest.TestCase()
     main()
