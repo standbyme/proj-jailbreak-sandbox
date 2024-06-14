@@ -28,21 +28,25 @@ def handle_dataset(
     checkpoint = []
 
     for intent in tqdm(intents):
-        start_time = time.perf_counter()
-        responses = target_model.inference(
-            intent,
-            do_sample=True,
-            max_new_tokens=128,
-            num_return_sequences=draft_number,
-        )
-        end_time = time.perf_counter()
-        inference_time = end_time - start_time
+        try:
+            start_time = time.perf_counter()
+            responses = target_model.inference(
+                intent,
+                do_sample=True,
+                max_new_tokens=128,
+                num_return_sequences=draft_number,
+            )
+            end_time = time.perf_counter()
+            inference_time = end_time - start_time
 
-        assert len(responses) == draft_number
+            assert len(responses) == draft_number
 
-        checkpoint.append(
-            {"intent": intent, "responses": responses, "time": inference_time}
-        )
+            checkpoint.append(
+                {"intent": intent, "responses": responses, "time": inference_time}
+            )
+        except RuntimeError:
+            # too long intent which is not suitable for the model
+            print(f"RuntimeError: {intent}",flush=True)
 
     with open(result_path / f"{dataset_name}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
