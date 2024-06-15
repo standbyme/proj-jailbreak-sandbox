@@ -127,7 +127,10 @@ def read_step_6_result(step_6_result_path, draft_number: int):
 
     def generate_guard_sandbox_label(row):
         assert len(row["labels"]) == draft_number
-        return any(row["labels"])
+        # count the ratio of True in row["labels"]
+        ratio = sum(row["labels"]) / draft_number
+
+        return ratio > threshold
 
     df[f"guard_sandbox_{draft_number}_label"] = df.apply(
         generate_guard_sandbox_label, axis=1
@@ -444,10 +447,12 @@ def main():
                         reduction_result = reduction(
                             transformation_result, ground_truth_column
                         )
-                        reduction_result.to_pickle(result_path / f"{ground_truth}.pkl")
+                        reduction_result.to_pickle(result_path / f"{ground_truth}_{threshold}.pkl")
 
 
 if __name__ == "__main__":
     intent_number = 50
     tc = unittest.TestCase()
-    main()
+
+    for threshold in map(lambda x: x / 10, range(0, 10, 1)):
+        main()
