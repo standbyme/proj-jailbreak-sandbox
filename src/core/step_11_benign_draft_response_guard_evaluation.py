@@ -80,6 +80,8 @@ def main():
         step_10_pickle_data = pickle.load(f)
 
     handle_dataset(step_10_pickle_data, result_path, guard, dataset_name)
+    print("11: Done", flush=True)
+
 
 
 if __name__ == "__main__":

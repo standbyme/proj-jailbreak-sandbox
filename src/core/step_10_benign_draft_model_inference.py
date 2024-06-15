@@ -79,6 +79,7 @@ def main():
     draft_model.warm_up()
 
     handle_dataset(step_9_pickle_data, result_path, draft_model, dataset_name)
+    print("10: Done", flush=True)
 
 
 if __name__ == "__main__":
