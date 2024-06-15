@@ -1,0 +1,27 @@
+#!/bin/sh -l
+
+#SBATCH --mail-user=hongyu@purdue.edu
+{%if is_last%}
+#SBATCH --mail-type=END
+{%endif%}
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-type=REQUEUE
+#SBATCH -A standby
+#SBATCH --time=04:00:00
+#SBATCH --gpus-per-node=1
+#SBATCH --constraint=A100-80GB
+#SBATCH --ntasks=1 --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --job-name={{task}}_{{name}}_{{ slurm_unit_index }}
+
+unset PYTHONPATH
+
+module purge
+module load cuda/12.1.1.lua
+module load cudnn/cuda-12.1_8.9.lua
+
+unset PYTHONPATH
+
+# draft_model_name="opt-125m-AWQ"
+
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_10_benign_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name opt-125m-AWQ --draft_number {{name}}
