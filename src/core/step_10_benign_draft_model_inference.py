@@ -63,6 +63,7 @@ def main():
     file_path = cleaned_dataset_file_path_list[slurm_unit_index]
 
     dataset_name = file_path.name.split(".")[0]
+    print(f"dataset_name: {dataset_name}", flush=True)
 
     result_path = Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
