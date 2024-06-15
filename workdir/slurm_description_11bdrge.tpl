@@ -24,4 +24,4 @@ unset PYTHONPATH
 
 # draft_model_name="opt-125m-AWQ"
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_10_benign_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name opt-125m-AWQ --draft_number {{name}}
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_11_benign_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name opt-125m-AWQ --draft_number {{name}}
