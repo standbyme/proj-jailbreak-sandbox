@@ -90,23 +90,9 @@ if __name__ == "__main__":
         required=True,
         choices=["Meta-Llama-3-70B-Instruct-AWQ"],
     )
-    parser.add_argument(
-        "--generation_name",
-        type=str,
-        required=True,
-        choices=["GCG", "AutoDAN"],
-    )
-    parser.add_argument(
-        "--dataset_name",
-        type=str,
-        required=True,
-        choices=["RPAB"],
-    )
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
     target_model_name = args.target_model_name
-    generation_name = args.generation_name
-    dataset_name = args.dataset_name
 
     main()
