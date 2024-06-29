@@ -21,76 +21,96 @@ def add_proj_to_PYTHONPATH():
 add_proj_to_PYTHONPATH()
 
 
-def figure(DSR_dict: Dict[int, float], accuracy_dict: Dict[int, float]):
-    tc.assertEqual(len(DSR_dict), len(accuracy_dict))
-    tc.assertEqual(len(DSR_dict), 10)
-
-    sns.lineplot(data=DSR_dict, color="g", marker="o")
-    ax2 = plt.twinx()
-    sns.lineplot(data=accuracy_dict, color="b", ax=ax2)
-
-
-def handle_dataset(
-    step_10_pickle_data, result_path, guard: BatchEvaluation, dataset_name: str
+def figure(
+    DSR_dict: Dict[int, float],
+    accuracy_dict: Dict[int, float],
+    result_path,
+    dataset_name: str,
 ):
-    items = step_10_pickle_data
+    # keys: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
+    # set x axis unit to 10
+    plt.xticks(range(0, 100, 10))
+    # set y axis unit to 0.01
+    plt.yticks(list(map(lambda x: x/100, range(90, 100, 1))))
 
+
+    # tc.assertEqual(list(DSR_dict.keys()), list(accuracy_dict.keys()))
+
+
+    # tc.assertEqual(len(DSR_dict), len(accuracy_dict))
+    # tc.assertEqual(len(DSR_dict), 10)
+
+    # sns.lineplot(data=DSR_dict, color="g", marker="o")
+    # ax2 = plt.twinx()
+    sns.lineplot(data=accuracy_dict, color="b")
+    # save the figure
+    plt.savefig(result_path / f"{dataset_name}.png")
+
+
+def handle_threshold(step_11_pickle_data, threshold: int) -> float:
     checkpoint = []
 
-    for item in tqdm(items):
-        intent = item["intent"]
-        responses: List[str] = item["responses"]
+    items = step_11_pickle_data
 
-        tc.assertIsInstance(intent, str)
-        tc.assertIsInstance(responses, list)
+    for item in items:
+        labels: List[bool] = item["labels"]
 
-        start_time = time.perf_counter()
-        evaluation_result = guard.evaluate(intent, responses)
-        end_time = time.perf_counter()
-        guard_time = end_time - start_time
+        tc.assertIsInstance(labels, list)
 
-        tc.assertEqual(len(evaluation_result), len(responses))
-        labels = evaluation_result
+        # get the ratio of True in labels
+        ratio = sum(labels) / len(labels)
 
-        v = {
-            "intent": intent,
-            "responses": responses,
-            "labels": labels,
-            "time": guard_time,
-        }
+        v = ratio > (threshold / 100)
+        v = not v
         checkpoint.append(v)
 
-    with open(result_path / f"{dataset_name}.pkl", "wb") as f:
-        pickle.dump(checkpoint, f)
+    accuracy = sum(checkpoint) / len(checkpoint)
+    return accuracy
+
+
+def handle_dataset(step_11_pickle_data) -> Dict[int, float]:
+    accuracy_dict = {}
+
+    for threshold in tqdm(range(0, 100, 10)):
+        accuracy = handle_threshold(step_11_pickle_data, threshold)
+        accuracy_dict[threshold] = accuracy
+
+    return accuracy_dict
 
 
 def main():
-    step_7_result_path = (
-        Path().cwd()
-        / "step_7_result"
-        / dataset_name
-        / target_model_name
-        / generation_name
-        / draft_model_name
-    )
+    # step_7_result_path = (
+    #     Path().cwd()
+    #     / "step_7_result"
+    #     / dataset_name
+    #     / target_model_name
+    #     / generation_name
+    #     / draft_model_name
+    # )
 
     step_11_result_path = (
         Path().cwd() / "step_11_result" / draft_model_name / f"{draft_number}"
     )
 
-    step_11_result_file_path_list = list(step_11_result_path.iterdir())
+    cleaned_dataset_file_path_list = list(step_11_result_path.iterdir())
+    cleaned_dataset_file_path_list.sort()
+    file_path = cleaned_dataset_file_path_list[slurm_unit_index]
+    dataset_name = file_path.name.split(".")[0]
+    print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_11_result" / draft_model_name / f"{draft_number}"
+    result_path = Path().cwd() / "step_12_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
         file_path,
         "rb",
     ) as f:
-        step_10_pickle_data = pickle.load(f)
+        step_11_pickle_data = pickle.load(f)
 
-    handle_dataset(step_10_pickle_data, result_path, guard, dataset_name)
-    print("11: Done", flush=True)
+    accuracy_dict = handle_dataset(step_11_pickle_data)
+    print("12: Done", flush=True)
+
+    figure(None, accuracy_dict, result_path, dataset_name)
 
 
 if __name__ == "__main__":
@@ -101,18 +121,18 @@ if __name__ == "__main__":
         type=int,
         required=True,
     )
-    parser.add_argument(
-        "--target_model_name",
-        type=str,
-        required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ"],
-    )
-    parser.add_argument(
-        "--generation_name",
-        type=str,
-        required=True,
-        choices=["GCG", "AutoDAN"],
-    )
+    # parser.add_argument(
+    #     "--target_model_name",
+    #     type=str,
+    #     required=True,
+    #     choices=["Meta-Llama-3-70B-Instruct-AWQ"],
+    # )
+    # parser.add_argument(
+    #     "--generation_name",
+    #     type=str,
+    #     required=True,
+    #     choices=["GCG", "AutoDAN"],
+    # )
     parser.add_argument(
         "--draft_model_name",
         type=str,
@@ -124,20 +144,20 @@ if __name__ == "__main__":
         type=int,
         required=True,
     )
-    parser.add_argument(
-        "--dataset_name",
-        type=str,
-        required=True,
-        choices=["RPAB"],
-    )
+    # parser.add_argument(
+    #     "--dataset_name",
+    #     type=str,
+    #     required=True,
+    #     choices=["RPAB"],
+    # )
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
-    target_model_name = args.target_model_name
-    generation_name = args.generation_name
+    # target_model_name = args.target_model_name
+    # generation_name = args.generation_name
     draft_model_name = args.draft_model_name
     draft_number = args.draft_number
-    dataset_name = args.dataset_name
+    # dataset_name = args.dataset_name
 
     tc = unittest.TestCase()
 
