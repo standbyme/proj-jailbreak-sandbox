@@ -31,7 +31,7 @@ def figure(
     # set x axis unit to 10
     plt.xticks(range(0, 100, 10))
     # set y axis unit to 0.01
-    plt.yticks(list(map(lambda x: x/100, range(90, 100, 1))))
+    plt.yticks(list(map(lambda x: x/100, range(90, 101, 1))))
 
 
     # tc.assertEqual(list(DSR_dict.keys()), list(accuracy_dict.keys()))
