@@ -3,6 +3,7 @@ import pickle
 import sys
 from pathlib import Path
 import time
+import unittest
 from tqdm import tqdm
 
 
@@ -95,4 +96,6 @@ if __name__ == "__main__":
     slurm_unit_index = args.slurm_unit_index
     target_model_name = args.target_model_name
 
+    tc = unittest.TestCase()
+    
     main()
