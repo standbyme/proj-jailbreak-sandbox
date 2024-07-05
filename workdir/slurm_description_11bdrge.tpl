@@ -12,7 +12,7 @@
 #SBATCH --constraint=A100-80GB
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=64G
-#SBATCH --job-name={{task}}_{{name}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task}}_{{ slurm_unit_index }}
 
 unset PYTHONPATH
 
