@@ -12,7 +12,7 @@
 #SBATCH --constraint="shape=BM.GPU.H100.8"
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
-#SBATCH --job-name={{name}}_{{task}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{ slurm_unit_index }}_{{ task }}_{{ name }}
 
 unset PYTHONPATH
 
