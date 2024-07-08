@@ -254,6 +254,17 @@ def transformation(concatenation_result: pd.DataFrame):
             concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
         )
 
+        print("Attention: Magic! The time is not added to total time!")
+        def generate_guard_sandbox_label(row):
+            return (
+                row["guard_LlamaGuardPrompt_label"]
+                or row[f"guard_sandbox_{draft_number}_label"]
+            )
+
+        concatenation_result[f"guard_sandbox_{draft_number}_label"] = concatenation_result.apply(
+            generate_guard_sandbox_label, axis=1
+        )
+
     # guard_PerplexityGuardPrompt_total_time
     def generate_guard_PerplexityGuardPrompt_total_time(row):
         return row["guard_PerplexityGuardPrompt_time"]
