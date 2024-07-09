@@ -88,7 +88,7 @@ if __name__ == "__main__":
         "--target_model_name",
         type=str,
         required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ"],
+        choices=["Meta-Llama-3-70B-Instruct-AWQ", "Qwen1.5-72B-Chat-AWQ"],
     )
     parser.add_argument(
         "--generation_name",
