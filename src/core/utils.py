@@ -26,6 +26,7 @@ def get_model_id(model_name: str):
         "Meta-Llama-3-70B-Instruct-AWQ": "TechxGenus/Meta-Llama-3-70B-Instruct-AWQ",
         "opt-125m": "facebook/opt-125m",
         "Qwen1.5-72B-Chat-AWQ": "Qwen/Qwen1.5-72B-Chat-AWQ",
+        "Phi-3-medium-128k-instruct": "microsoft/Phi-3-medium-128k-instruct",
     }
 
     return database[model_name]
