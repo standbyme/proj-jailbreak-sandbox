@@ -1,6 +1,7 @@
 temp
 venv
 log
+slurm-*
 step_0*
 step_2*
 step_3*
