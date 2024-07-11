@@ -17,4 +17,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/workdir/temp_copy.py
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/workdir/temp_copy.py

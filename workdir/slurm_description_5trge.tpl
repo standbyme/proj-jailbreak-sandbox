@@ -22,8 +22,8 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-# /scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPrompt
+# /depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPrompt
 
-# /scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPromptResponse
+# /depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPromptResponse
 
-/scratch/gilbreth/hongyu/project/enrichment/conda/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name PerplexityGuardPrompt
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name PerplexityGuardPrompt
