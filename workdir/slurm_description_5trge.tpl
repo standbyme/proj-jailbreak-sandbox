@@ -12,7 +12,7 @@
 #SBATCH --constraint=A100-80GB
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
-#SBATCH --job-name={{name}}_{{task}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task}}_{{ slurm_unit_index }}
 
 unset PYTHONPATH
 
@@ -22,8 +22,12 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-# /depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPrompt
+# guard_name="LlamaGuardPrompt"
+guard_name="LlamaGuardPromptResponse"
 
-# /depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name LlamaGuardPromptResponse
+# target_model_name="Meta-Llama-3-70B-Instruct-AWQ"
+# target_model_name="Qwen1.5-72B-Chat-AWQ"
+target_model_name="Phi-3-medium-128k-instruct"
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Meta-Llama-3-70B-Instruct-AWQ --guard_name PerplexityGuardPrompt
+
+/depot/zcelik/data/hongyu/venv/bin/python ../src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --guard_name "$guard_name"
