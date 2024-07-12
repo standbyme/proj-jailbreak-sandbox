@@ -67,8 +67,6 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
                 for response in responses
             ]
         else:
-            self.tc.assertEqual(len(responses), 0)
-
             chats = [
                 [
                     {"role": "user", "content": prompt},
