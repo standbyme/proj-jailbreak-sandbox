@@ -21,4 +21,8 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_4_target_response_ground_truth_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name Phi-3-medium-128k-instruct
+# target_model_name="Meta-Llama-3-70B-Instruct-AWQ"
+# target_model_name="Qwen1.5-72B-Chat-AWQ"
+# target_model_name="Phi-3-medium-128k-instruct"
+
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_4_target_response_ground_truth_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name"
