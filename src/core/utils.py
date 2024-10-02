@@ -1,4 +1,19 @@
 import pickle
+import pprint
+
+
+class PrettyPrinter(pprint.PrettyPrinter):
+    def _format(self, object, *args, **kwargs):
+        if isinstance(object, list):
+            object = [object[0]]
+        elif isinstance(object, str):
+            object = f"{object[:20]}..."
+        return pprint.PrettyPrinter._format(self, object, *args, **kwargs)
+
+
+def abstract(v):
+    printer = PrettyPrinter()
+    printer.pprint(v)
 
 
 class Cache:
