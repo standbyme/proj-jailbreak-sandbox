@@ -25,6 +25,9 @@ def handle_intent(
 
     checkpoint = {"intent": intent, "attempts": []}
 
+    if generation_name == "GCG":
+        attempts = attempts[-100:]
+
     for attempt in tqdm(attempts):
         prompt = attempt["prompt"]
 
