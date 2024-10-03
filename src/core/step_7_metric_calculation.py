@@ -1,12 +1,13 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
 import time
-from typing import List
 import unittest
-from tqdm import tqdm
+from pathlib import Path
+from typing import List
+
 import pandas as pd
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():

@@ -1,15 +1,15 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
 import time
-from typing import Dict, List
 import unittest
-from tqdm import tqdm
+from pathlib import Path
+from typing import Dict, List
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():

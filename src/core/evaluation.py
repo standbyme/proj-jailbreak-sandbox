@@ -1,17 +1,19 @@
-from abc import ABC, abstractmethod
 import os
-import transformers
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from llama_recipes.inference.prompt_format_utils import build_default_prompt, create_conversation, LlamaGuardVersion, \
-    AgentType
-from typing import List, Tuple
+from abc import ABC, abstractmethod
 from enum import Enum
-from ppl_calculator import PPL_Calculator
-from language_model import Llama3LanguageModel, OpenAILanguageModel
-from multifaceted import MultifacetedEvaluation
+from typing import List, Tuple
 
 import torch
+import transformers
 from dotenv import load_dotenv
+from language_model import Llama3LanguageModel, OpenAILanguageModel
+from llama_recipes.inference.prompt_format_utils import (AgentType,
+                                                         LlamaGuardVersion,
+                                                         build_default_prompt,
+                                                         create_conversation)
+from multifaceted import MultifacetedEvaluation
+from ppl_calculator import PPL_Calculator
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 load_dotenv()
 

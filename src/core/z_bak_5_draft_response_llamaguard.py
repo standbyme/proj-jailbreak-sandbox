@@ -11,7 +11,8 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.evaluation import LlamaGuardResponseEvaluation, LlamaGuardPromptEvaluation
+from src.core.evaluation import (LlamaGuardPromptEvaluation,
+                                 LlamaGuardResponseEvaluation)
 
 
 def handle_intent(pickle_data, prompt_evaluation, response_evaluation, result_path):

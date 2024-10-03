@@ -1,9 +1,10 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
 import time
 import unittest
+from pathlib import Path
+
 from tqdm import tqdm
 
 

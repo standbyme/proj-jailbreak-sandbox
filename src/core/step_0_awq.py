@@ -1,6 +1,5 @@
 from awq import AutoAWQForCausalLM
-from transformers import AutoTokenizer
-from transformers import AwqConfig
+from transformers import AutoTokenizer, AwqConfig
 
 
 def quantize_and_save(model_id):

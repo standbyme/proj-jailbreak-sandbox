@@ -1,10 +1,10 @@
-from abc import ABC, abstractmethod
 import unittest
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from abc import ABC, abstractmethod
 from typing import List
-import torch
 
+import torch
 from ppl_calculator import PPL_Calculator
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 
 class BatchEvaluation(ABC):

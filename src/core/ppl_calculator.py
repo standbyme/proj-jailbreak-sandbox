@@ -1,15 +1,16 @@
 # Adapted from https://github.com/asahi417/lmppl/
 
-import os
 import gc
+import json
+import os
+import urllib
 from math import exp
 from typing import List
-from tqdm import tqdm
-import urllib
-import json
 
-import transformers
 import torch
+import transformers
+from tqdm import tqdm
+
 
 def internet_connection(host: str = 'http://google.com'):
     """ check if internet connection is available """

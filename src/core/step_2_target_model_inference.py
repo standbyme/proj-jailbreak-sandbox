@@ -2,11 +2,12 @@ import argparse
 import os
 import pickle
 import sys
-from pathlib import Path
 import time
 import unittest
-from tqdm import tqdm
+from pathlib import Path
+
 import torch
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():

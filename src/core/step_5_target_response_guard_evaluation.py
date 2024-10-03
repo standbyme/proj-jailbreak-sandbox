@@ -1,9 +1,10 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
 import time
+from pathlib import Path
 from typing import List
+
 from tqdm import tqdm
 
 
@@ -14,11 +15,8 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.guard import (
-    BatchEvaluation,
-    LlamaGuardBatchEvaluation,
-    PerplexityBatchEvaluation
-)
+from src.core.guard import (BatchEvaluation, LlamaGuardBatchEvaluation,
+                            PerplexityBatchEvaluation)
 
 
 def handle_intent(

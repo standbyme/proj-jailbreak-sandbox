@@ -1,10 +1,11 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
 import time
-from typing import List
 import unittest
+from pathlib import Path
+from typing import List
+
 from tqdm import tqdm
 
 
@@ -15,10 +16,7 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.guard import (
-    BatchEvaluation,
-    LlamaGuardBatchEvaluation,
-)
+from src.core.guard import BatchEvaluation, LlamaGuardBatchEvaluation
 
 
 def handle_dataset(

@@ -1,9 +1,10 @@
 import argparse
 import pickle
 import sys
-from pathlib import Path
-from tqdm import tqdm
 import unittest
+from pathlib import Path
+
+from tqdm import tqdm
 
 
 def add_proj_to_PYTHONPATH():
@@ -13,12 +14,9 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.utils import get_model_id
+from src.core.guard import BatchEvaluation, LlamaGuardBatchEvaluation
 from src.core.language_model import HuggingFaceLanguageModel
-from src.core.guard import (
-    BatchEvaluation,
-    LlamaGuardBatchEvaluation,
-)
+from src.core.utils import get_model_id
 
 
 def handle_dataset(
