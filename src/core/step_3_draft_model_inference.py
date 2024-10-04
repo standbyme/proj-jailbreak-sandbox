@@ -24,6 +24,9 @@ def handle_intent(
     intent = step_1_pickle_data["intent"]
     attempts = step_1_pickle_data["attempts"]
 
+    if generation_name == "GCG":
+        attempts = attempts[-100:]
+
     checkpoint = {"intent": intent, "attempts": []}
 
     for attempt in tqdm(attempts):
@@ -31,7 +34,10 @@ def handle_intent(
 
         start_time = time.perf_counter()
         responses = target_model.inference(
-            prompt, do_sample=True, max_new_tokens=128, num_return_sequences=draft_number
+            prompt,
+            do_sample=True,
+            max_new_tokens=128,
+            num_return_sequences=draft_number,
         )
         end_time = time.perf_counter()
         inference_time = end_time - start_time
@@ -91,7 +97,11 @@ if __name__ == "__main__":
         "--target_model_name",
         type=str,
         required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ", "Qwen1.5-72B-Chat-AWQ", "Phi-3-medium-128k-instruct"],
+        choices=[
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ],
     )
     parser.add_argument(
         "--draft_model_name",
