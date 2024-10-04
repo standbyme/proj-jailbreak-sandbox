@@ -35,7 +35,7 @@ class MultifacetedEvaluationResult:
 class MultifacetedEvaluation:
     def __init__(self, openai_api_key: str) -> None:
         self.openai_client = OpenAI(api_key=openai_api_key)
-        self.model_version = "gpt-4o"
+        self.model_version = "gpt-4o-mini"
 
         self.path_compatible_model_version = self.model_version.replace("/", "-")
 
