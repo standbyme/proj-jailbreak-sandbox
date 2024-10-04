@@ -17,17 +17,11 @@
 unset PYTHONPATH
 
 module purge
+module load gcc/12.3.0.lua
+module load openmpi/4.1.5-gpu-cuda12.lua
 module load cuda/12.1.1.lua
 module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-# guard_name="LlamaGuardPrompt"
-guard_name="LlamaGuardPromptResponse"
-
-# target_model_name="Meta-Llama-3-70B-Instruct-AWQ"
-# target_model_name="Qwen1.5-72B-Chat-AWQ"
-target_model_name="Phi-3-medium-128k-instruct"
-
-
-/depot/zcelik/data/hongyu/venv/bin/python ../src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --guard_name "$guard_name"
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --guard_name {{ guard_name }}
