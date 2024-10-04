@@ -24,4 +24,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-./venv/bin/python ../src/core/step_2_target_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{generation_name}} --dataset_name {{dataset_name}} --target_model_name {{target_model_name}}
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_2_target_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{generation_name}} --dataset_name {{dataset_name}} --target_model_name {{target_model_name}}
