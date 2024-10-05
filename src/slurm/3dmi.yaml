@@ -3,7 +3,7 @@ count: 50
 
 matrix:
   generation_name:
-    # - AutoDAN
+    - AutoDAN
     - GCG
   dataset_name:
     - RPAB
@@ -11,3 +11,6 @@ matrix:
     - Meta-Llama-3-70B-Instruct-AWQ
     - Qwen1.5-72B-Chat-AWQ
     - Phi-3-medium-128k-instruct
+  draft_model_name:
+    # - opt-125m-AWQ
+    - SmolLM-135M

@@ -42,6 +42,7 @@ def get_model_id(model_name: str):
         "opt-125m": "facebook/opt-125m",
         "Qwen1.5-72B-Chat-AWQ": "Qwen/Qwen1.5-72B-Chat-AWQ",
         "Phi-3-medium-128k-instruct": "microsoft/Phi-3-medium-128k-instruct",
+        "SmolLM-135M": "HuggingFaceTB/SmolLM-135M",
     }
 
     return database[model_name]

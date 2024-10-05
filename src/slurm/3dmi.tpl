@@ -24,16 +24,16 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 5
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 5
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 10
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 10
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 15
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 15
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 20
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 20
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 25
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 25
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 30
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 30
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name opt-125m-AWQ --draft_number 35
+/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 35

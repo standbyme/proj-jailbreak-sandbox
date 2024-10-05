@@ -25,8 +25,13 @@ class LanguageModel(ABC):
 class HuggingFaceLanguageModel(LanguageModel):
     def __init__(self, model_id) -> None:
         assert torch.cuda.is_available()
+
+        args = {}
+        if model_id == "HuggingFaceTB/SmolLM-135M":
+            args["torch_dtype"] = torch.bfloat16
+
         self.pipe = pipeline(
-            "text-generation", model=model_id, device_map="auto", return_full_text=False
+            "text-generation", model=model_id, device_map="auto", return_full_text=False, **args
         )
 
     def inference(
