@@ -3,7 +3,7 @@ count: 50
 
 matrix:
   generation_name:
-    # - AutoDAN
+    - AutoDAN
     - GCG
   dataset_name:
     - RPAB
@@ -14,3 +14,4 @@ matrix:
   guard_name:
     - LlamaGuardPrompt
     - LlamaGuardPromptResponse
+    - PromptGuard
