@@ -5,6 +5,7 @@ from typing import List
 import torch
 from ppl_calculator import PPL_Calculator
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import pipeline
 
 
 class BatchEvaluation(ABC):
@@ -102,5 +103,19 @@ class PerplexityBatchEvaluation(BatchEvaluation):
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         ppl = self.ppl_calculator.get_perplexity(prompt)
         v = [ppl > self.threshold]
+
+        return v
+
+
+class PromptGuardBatchEvaluation(BatchEvaluation):
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.classifier = pipeline(
+            "text-classification", model="meta-llama/Prompt-Guard-86M", device="cuda"
+        )
+
+    def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
+        v = list(map(lambda x: x["label"] == "JAILBREAK", self.classifier(prompt)))
 
         return v
