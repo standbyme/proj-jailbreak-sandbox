@@ -390,9 +390,13 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
 
 def main():
     for dataset_name in ["RPAB"]:
-        for target_model_name in ["Meta-Llama-3-70B-Instruct-AWQ"]:
-            for generation_name in ["AutoDAN"]:
-                for draft_model_name in ["opt-125m-AWQ"]:
+        for target_model_name in [
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ]:
+            for generation_name in ["AutoDAN", "GCG"]:
+                for draft_model_name in ["opt-125m-AWQ", "SmolLM-135M"]:
                     step_2_result_path = (
                         Path().cwd()
                         / "step_2_result"

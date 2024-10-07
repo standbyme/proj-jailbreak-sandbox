@@ -12,11 +12,13 @@
 #SBATCH --constraint=A100-80GB
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
-#SBATCH --job-name={{task}}_{{name}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task}}_{{ slurm_unit_index }}
 
 unset PYTHONPATH
 
 module purge
+module load gcc/12.3.0.lua
+module load openmpi/4.1.5-gpu-cuda12.lua
 module load cuda/12.1.1.lua
 module load cudnn/cuda-12.1_8.9.lua
 
