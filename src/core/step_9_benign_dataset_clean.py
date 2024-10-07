@@ -63,7 +63,7 @@ def handle_dataset(
 
 
 def main():
-    dataset_dir_path = Path("/mnt/shared_ad3_mt1/honcai/proj/sandbox/benign/prompts")
+    dataset_dir_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/prompts")
 
     result_path = Path().cwd() / "step_9_result" / target_model_name
     result_path.mkdir(parents=True, exist_ok=True)
@@ -94,7 +94,11 @@ if __name__ == "__main__":
         "--target_model_name",
         type=str,
         required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ", "Qwen1.5-72B-Chat-AWQ", "Phi-3-medium-128k-instruct"],
+        choices=[
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ],
     )
 
     args = parser.parse_args()
