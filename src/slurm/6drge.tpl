@@ -24,20 +24,16 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-# target_model_name="Meta-Llama-3-70B-Instruct-AWQ"
-# target_model_name="Qwen1.5-72B-Chat-AWQ"
-target_model_name="Phi-3-medium-128k-instruct"
+./venv/bin/python ../src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 5 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python ../src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 5 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 10 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 10 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 15 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 15 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 20 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 20 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 25 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 25 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 30 --draft_model_name {{ draft_model_name }}
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 30 --draft_model_name opt-125m-AWQ
-
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name AutoDAN --dataset_name RPAB --target_model_name "$target_model_name" --draft_number 35 --draft_model_name opt-125m-AWQ
+./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 35 --draft_model_name {{ draft_model_name }}
