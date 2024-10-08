@@ -24,6 +24,5 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-# draft_model_name="opt-125m-AWQ"
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_10_benign_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name opt-125m-AWQ --draft_number {{name}}
+./venv/bin/python ../src/core/step_10_benign_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name {{ draft_model_name }} --draft_number {{ draft_number }}

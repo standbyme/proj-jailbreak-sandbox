@@ -1,0 +1,15 @@
+name: SB
+count: 50
+
+matrix:
+  draft_model_name:
+    - opt-125m-AWQ
+    - SmolLM-135M
+  draft_number:
+    - 5
+    - 10
+    - 15
+    - 20
+    - 25
+    - 30
+    - 35
