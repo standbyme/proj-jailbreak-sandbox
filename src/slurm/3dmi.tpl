@@ -1,9 +1,7 @@
 #!/bin/sh -l
 
 #SBATCH --mail-user=hongyu@purdue.edu
-{%if is_last%}
 #SBATCH --mail-type=END
-{%endif%}
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
@@ -12,7 +10,7 @@
 #SBATCH --constraint=A100-80GB
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
-#SBATCH --job-name={{task}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task_name}}
 
 unset PYTHONPATH
 
@@ -24,16 +22,16 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 5
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 5
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 10
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 10
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 15
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 15
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 20
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 20
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 25
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 25
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 30
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 30
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 35
+./venv/bin/python ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 35

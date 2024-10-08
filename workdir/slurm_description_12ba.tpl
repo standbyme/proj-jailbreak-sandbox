@@ -1,9 +1,9 @@
 #!/bin/sh -l
 
 #SBATCH --mail-user=hongyu@purdue.edu
-{%if is_last%}
+
 #SBATCH --mail-type=END
-{%endif%}
+
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
@@ -11,7 +11,7 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=64G
-#SBATCH --job-name={{task}}_{{name}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task_name}}
 
 unset PYTHONPATH
 
@@ -23,4 +23,4 @@ unset PYTHONPATH
 
 # draft_model_name="opt-125m-AWQ"
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_12_benign_analysis.py --slurm_unit_index {{ slurm_unit_index }} --draft_model_name opt-125m-AWQ --draft_number {{name}}
+/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_12_benign_analysis.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --draft_model_name opt-125m-AWQ --draft_number {{project_name}}

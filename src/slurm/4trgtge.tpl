@@ -1,9 +1,7 @@
 #!/bin/sh -l
 
 #SBATCH --mail-user=hongyu@purdue.edu
-{%if is_last%}
 #SBATCH --mail-type=END
-{%endif%}
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
@@ -11,7 +9,7 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
-#SBATCH --job-name={{task}}_{{ slurm_unit_index }}
+#SBATCH --job-name={{task_name}}
 
 unset PYTHONPATH
 
@@ -23,4 +21,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/scratch/gilbreth/hongyu/project/sandbox/GCG/workdir/venv/bin/python ../src/core/step_4_target_response_ground_truth_guard_evaluation.py --slurm_unit_index {{ slurm_unit_index }} --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }}
+./venv/bin/python ../src/core/step_4_target_response_ground_truth_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }}
