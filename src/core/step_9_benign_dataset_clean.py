@@ -128,6 +128,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
+    print(args)
+    
     slurm_unit_index = args.slurm_unit_index
     target_model_name = args.target_model_name
 
