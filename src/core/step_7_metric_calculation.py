@@ -255,7 +255,7 @@ def transformation(concatenation_result: pd.DataFrame):
             concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
         )
 
-        print("Attention: Magic! The time is not added to total time!")
+        # print("Attention: Magic! The time is not added to total time!")
         def generate_guard_sandbox_label(row):
             return (
                 row["guard_LlamaGuardPrompt_label"]
