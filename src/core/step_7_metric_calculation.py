@@ -361,8 +361,7 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
     ]
 
     rows = []
-    for guard_name in tqdm(
-        [
+    for guard_name in [
             "NA",
             "LlamaGuardPrompt",
             "LlamaGuardPromptResponse",
@@ -375,8 +374,7 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
             "sandbox_25",
             "sandbox_30",
             "sandbox_35",
-        ]
-    ):
+        ]:
         row = handle_setting(
             transformation_result,
             ground_truth_column,
@@ -470,5 +468,5 @@ if __name__ == "__main__":
     intent_number = 50
     tc = unittest.TestCase()
 
-    for threshold in map(lambda x: x / 10, range(0, 10, 1)):
+    for threshold in tqdm(list(map(lambda x: x / 10, range(0, 10, 1)))):
         main()
