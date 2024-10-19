@@ -3,7 +3,6 @@ venv
 log
 slurm-*
 step_0*
-step_7*
 step_8*
 step_9*
 step_10*
