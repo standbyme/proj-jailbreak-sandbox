@@ -119,3 +119,13 @@ class PromptGuardBatchEvaluation(BatchEvaluation):
         v = list(map(lambda x: x["label"] == "JAILBREAK", self.classifier(prompt)))
 
         return v
+
+class AllTrueBatchEvaluation(BatchEvaluation):
+    def __init__(self) -> None:
+        super().__init__()
+
+
+    def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
+        v = list(map(lambda x: True, responses))
+
+        return v
