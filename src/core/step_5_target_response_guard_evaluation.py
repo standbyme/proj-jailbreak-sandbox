@@ -15,13 +15,16 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.guard import (BatchEvaluation, LlamaGuardBatchEvaluation,
-                            PerplexityBatchEvaluation, PromptGuardBatchEvaluation)
+from src.core.guard import (
+    BatchEvaluation,
+    LlamaGuardBatchEvaluation,
+    PerplexityBatchEvaluation,
+    PromptGuardBatchEvaluation,
+    AllTrueBatchEvaluation,
+)
 
 
-def handle_intent(
-    step_2_pickle_data, result_path, guard: BatchEvaluation
-):
+def handle_intent(step_2_pickle_data, result_path, guard: BatchEvaluation):
     intent = step_2_pickle_data["intent"]
     attempts = step_2_pickle_data["attempts"]
 
@@ -65,11 +68,14 @@ def get_guard(guard_name) -> BatchEvaluation:
         v = PerplexityBatchEvaluation()
     elif guard_name == "PromptGuard":
         v = PromptGuardBatchEvaluation()
+    elif guard_name == "AllTrueGuard":
+        v = AllTrueBatchEvaluation()
     else:
         raise ValueError(f"Unknown guard_name: {guard_name}")
-    
+
     v.warmup()
     return v
+
 
 def main():
     guard = get_guard(guard_name)
@@ -113,7 +119,11 @@ if __name__ == "__main__":
         "--target_model_name",
         type=str,
         required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ", "Qwen1.5-72B-Chat-AWQ", "Phi-3-medium-128k-instruct"],
+        choices=[
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ],
     )
     parser.add_argument(
         "--generation_name",
@@ -136,6 +146,7 @@ if __name__ == "__main__":
             "LlamaGuardPromptResponse",
             "PerplexityGuardPrompt",
             "PromptGuard",
+            "AllTrueGuard",
         ],
     )
 
