@@ -15,3 +15,4 @@ matrix:
     - LlamaGuardPrompt
     - LlamaGuardPromptResponse
     - PromptGuard
+    - AllTrueGuard
