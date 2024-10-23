@@ -222,6 +222,13 @@ def transformation(concatenation_result: pd.DataFrame):
         generate_ground_truth_LlamaGuard_label, axis=1
     )
 
+    def generate_ground_truth_AllTrueGuard_label(row):
+        return True
+    
+    concatenation_result["ground_truth_AllTrueGuard_label"] = concatenation_result.apply(
+        generate_ground_truth_AllTrueGuard_label, axis=1
+    )
+
     # guard_LlamaGuardPrompt_total_time
     def generate_guard_LlamaGuardPrompt_total_time(row):
         return row["guard_LlamaGuardPrompt_time"]
@@ -358,6 +365,7 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
     assert ground_truth_column in [
         "ground_truth_GPT_label",
         "ground_truth_LlamaGuard_label",
+        "ground_truth_AllTrueGuard_label",
     ]
 
     rows = []
@@ -456,7 +464,7 @@ def main():
                     )
                     transformation_result = transformation(concatenation_result)
 
-                    for ground_truth in ["GPT", "LlamaGuard"]:
+                    for ground_truth in ["GPT", "LlamaGuard", "AllTrueGuard"]:
                         ground_truth_column = f"ground_truth_{ground_truth}_label"
                         reduction_result = reduction(
                             transformation_result, ground_truth_column
