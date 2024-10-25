@@ -1,10 +1,7 @@
-import argparse
 import pickle
 import sys
-import time
 import unittest
 from pathlib import Path
-from typing import List
 
 import pandas as pd
 from tqdm import tqdm
@@ -224,7 +221,7 @@ def transformation(concatenation_result: pd.DataFrame):
 
     def generate_ground_truth_AllTrueGuard_label(row):
         return True
-    
+
     concatenation_result["ground_truth_AllTrueGuard_label"] = concatenation_result.apply(
         generate_ground_truth_AllTrueGuard_label, axis=1
     )
@@ -262,7 +259,7 @@ def transformation(concatenation_result: pd.DataFrame):
             concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
         )
 
-        # print("Attention: Magic! The time is not added to total time!")
+        # print("Attention: The time of guard_LlamaGuardPrompt_label is not added to total time.")
         def generate_guard_sandbox_label(row):
             return (
                 row["guard_LlamaGuardPrompt_label"]
@@ -464,7 +461,7 @@ def main():
                     )
                     transformation_result = transformation(concatenation_result)
 
-                    for ground_truth in ["GPT", "LlamaGuard", "AllTrueGuard"]:
+                    for ground_truth in ["GPT", "AllTrueGuard"]:
                         ground_truth_column = f"ground_truth_{ground_truth}_label"
                         reduction_result = reduction(
                             transformation_result, ground_truth_column
