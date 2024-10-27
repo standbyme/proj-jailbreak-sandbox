@@ -22,16 +22,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-./venv/bin/python ../src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 5 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 10 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 15 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 20 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 25 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 30 --draft_model_name {{ draft_model_name }}
-
-./venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_number 35 --draft_model_name {{ draft_model_name }}
+./venv/bin/python ../src/core/step_6_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name}} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --guard_name {{ guard_name }}

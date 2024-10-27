@@ -51,12 +51,19 @@ def handle_intent(step_3_pickle_data, result_path, guard: BatchEvaluation):
         pickle.dump(checkpoint, f)
 
 
-def main():
-    guard = LlamaGuardBatchEvaluation()
-    guard.set_is_consider_prompt(False)
-    guard.set_is_consider_response(True)
-    guard.warmup()
+def get_guard(guard_name) -> BatchEvaluation:
+    if guard_name == "LlamaGuardResponse":
+        v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(False)
+        v.set_is_consider_response(True)
+    else:
+        raise ValueError(f"Unknown guard_name: {guard_name}")
 
+    v.warmup()
+    return v
+
+
+def main():
     step_3_result_path = (
         Path().cwd()
         / "step_3_result"
@@ -73,6 +80,7 @@ def main():
         / dataset_name
         / target_model_name
         / generation_name
+        / guard_name
         / draft_model_name
         / f"{draft_number}"
     )
@@ -99,7 +107,11 @@ if __name__ == "__main__":
         "--target_model_name",
         type=str,
         required=True,
-        choices=["Meta-Llama-3-70B-Instruct-AWQ", "Qwen1.5-72B-Chat-AWQ", "Phi-3-medium-128k-instruct"],
+        choices=[
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ],
     )
     parser.add_argument(
         "--generation_name",
@@ -114,15 +126,18 @@ if __name__ == "__main__":
         choices=["RPAB"],
     )
     parser.add_argument(
+        "--guard_name",
+        type=str,
+        required=True,
+        choices=[
+            "LlamaGuardResponse",
+        ],
+    )
+    parser.add_argument(
         "--draft_model_name",
         type=str,
         required=True,
         choices=["opt-125m-AWQ", "SmolLM-135M"],
-    )
-    parser.add_argument(
-        "--draft_number",
-        type=int,
-        required=True,
     )
 
     args = parser.parse_args()
@@ -130,7 +145,10 @@ if __name__ == "__main__":
     target_model_name = args.target_model_name
     generation_name = args.generation_name
     dataset_name = args.dataset_name
+    guard_name = args.guard_name
     draft_model_name = args.draft_model_name
-    draft_number = args.draft_number
 
-    main()
+    guard = get_guard(guard_name)
+
+    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+        main()

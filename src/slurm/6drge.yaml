@@ -14,3 +14,5 @@ matrix:
   draft_model_name:
     - opt-125m-AWQ
     - SmolLM-135M
+  guard_name:
+    - LlamaGuardResponse
