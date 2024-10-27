@@ -56,6 +56,7 @@ def handle_dataset(
     for intent in tqdm(intents[checkpoint["state"] :]):
         checkpoint["state"] += 1
 
+        guard.set_is_consider_prompt(True)
         guard.set_is_consider_response(False)
         evaluation_results = guard.evaluate(intent, [])
         tc.assertEqual(len(evaluation_results), 1)
@@ -71,6 +72,7 @@ def handle_dataset(
         )
         assert len(responses) == 1
 
+        guard.set_is_consider_prompt(False)
         guard.set_is_consider_response(True)
         evaluation_results = guard.evaluate(intent, responses)
         tc.assertEqual(len(evaluation_results), 1)
@@ -100,7 +102,6 @@ def main():
     file_path = dataset_file_path_list[slurm_unit_index]
 
     guard = LlamaGuardBatchEvaluation()
-    guard.set_is_consider_response(False)
 
     target_model_id = get_model_id(target_model_name)
     target_model = HuggingFaceLanguageModel(target_model_id)

@@ -25,8 +25,10 @@ class BatchEvaluation(ABC):
         self.is_consider_response = is_consider_response
 
     def warmup(self):
+        is_consider_prompt = self.is_consider_prompt
         is_consider_response = self.is_consider_response
 
+        self.set_is_consider_prompt(True)
         self.set_is_consider_response(True)
 
         self.evaluate(
@@ -37,6 +39,7 @@ class BatchEvaluation(ABC):
             * 10,
         )
 
+        self.set_is_consider_prompt(is_consider_prompt)
         self.set_is_consider_response(is_consider_response)
 
 

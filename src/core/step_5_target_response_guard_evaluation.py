@@ -60,9 +60,15 @@ def handle_intent(step_2_pickle_data, result_path, guard: BatchEvaluation):
 def get_guard(guard_name) -> BatchEvaluation:
     if guard_name == "LlamaGuardPrompt":
         v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(True)
         v.set_is_consider_response(False)
+    elif guard_name == "LlamaGuardResponse":
+        v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(False)
+        v.set_is_consider_response(True)
     elif guard_name == "LlamaGuardPromptResponse":
         v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(True)
         v.set_is_consider_response(True)
     elif guard_name == "PerplexityGuardPrompt":
         v = PerplexityBatchEvaluation()
@@ -143,6 +149,7 @@ if __name__ == "__main__":
         required=True,
         choices=[
             "LlamaGuardPrompt",
+            "LlamaGuardResponse",
             "LlamaGuardPromptResponse",
             "PerplexityGuardPrompt",
             "PromptGuard",

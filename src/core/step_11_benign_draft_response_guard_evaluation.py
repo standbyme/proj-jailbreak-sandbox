@@ -55,6 +55,7 @@ def handle_dataset(
 
 def main():
     guard = LlamaGuardBatchEvaluation()
+    guard.set_is_consider_prompt(False)
     guard.set_is_consider_response(True)
     guard.warmup()
 
