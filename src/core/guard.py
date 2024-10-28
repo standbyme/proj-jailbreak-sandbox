@@ -59,9 +59,10 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
         self.model = AutoModelForCausalLM.from_pretrained(
             model_id, trust_remote_code=True, device_map=self.device
         )
-        self.model.generation_config.pad_token_id = (
-            self.model.generation_config.eos_token_id
-        )
+        # Raise an error if the model is LlamaGuard-3-8B
+        # self.model.generation_config.pad_token_id = (
+        #     self.model.generation_config.eos_token_id
+        # )
 
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         self.tc.assertIsNotNone(self.is_consider_prompt)
