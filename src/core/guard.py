@@ -66,7 +66,7 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         self.tc.assertIsNotNone(self.is_consider_prompt)
         self.tc.assertIsNotNone(self.is_consider_response)
-        self.tc.assertNotEqual(self.is_consider_prompt, self.is_consider_response)
+        self.tc.assertTrue(self.is_consider_prompt or self.is_consider_response)
 
         if self.is_consider_response:
             chats = []
