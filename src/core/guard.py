@@ -75,6 +75,10 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
                 chat = []
                 if self.is_consider_prompt:
                     chat.append({"role": "user", "content": prompt})
+                else:
+                    # If we only consider the response, we need to add a dummy prompt
+                    # Conversation roles must alternate user/assistant/user/assistant/... (LlamaGuard requirement)
+                    chat.append({"role": "user", "content": "Hi"})
                 chat.append({"role": "assistant", "content": response})
                 chats.append(chat)
         else:
