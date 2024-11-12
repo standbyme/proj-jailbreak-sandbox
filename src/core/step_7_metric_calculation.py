@@ -439,6 +439,7 @@ def main():
                         / dataset_name
                         / target_model_name
                         / generation_name
+                        / "LlamaGuardResponse"
                         / draft_model_name
                     )
 
