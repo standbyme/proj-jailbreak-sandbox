@@ -166,6 +166,7 @@ def concatenation(
     step_5_result_list = []
     for guard_name in [
         "LlamaGuardPrompt",
+        "LlamaGuardResponse",
         "LlamaGuardPromptResponse",
         "PromptGuard",
     ]:
@@ -212,6 +213,7 @@ def transformation(concatenation_result: pd.DataFrame):
     def generate_ground_truth_LlamaGuard_label(row):
         return (
             row["guard_LlamaGuardPrompt_label"]
+            or row["guard_LlamaGuardResponse_label"]
             or row["guard_LlamaGuardPromptResponse_label"]
         )
 
@@ -232,6 +234,19 @@ def transformation(concatenation_result: pd.DataFrame):
 
     concatenation_result["guard_LlamaGuardPrompt_total_time"] = (
         concatenation_result.apply(generate_guard_LlamaGuardPrompt_total_time, axis=1)
+    )
+
+    # guard_LlamaGuardResponse_total_time
+    def generate_guard_LlamaGuardResponse_total_time(row):
+        return (
+            row["guard_LlamaGuardResponse_time"]
+            + row["target_model_inference_time"]
+        )
+
+    concatenation_result["guard_LlamaGuardResponse_total_time"] = (
+        concatenation_result.apply(
+            generate_guard_LlamaGuardResponse_total_time, axis=1
+        )
     )
 
     # guard_LlamaGuardPromptResponse_total_time
@@ -278,6 +293,37 @@ def transformation(concatenation_result: pd.DataFrame):
         concatenation_result.apply(
             generate_guard_PromptGuard_total_time, axis=1
         )
+    )
+
+    # guard_LlamaGuardPrompt_and_LlamaGuardResponse_label
+    def generate_guard_LlamaGuardPrompt_and_LlamaGuardResponse_label(row):
+        return (
+            row["guard_LlamaGuardPrompt_label"]
+            or row["guard_LlamaGuardResponse_label"]
+        )
+
+    concatenation_result[
+        "guard_LlamaGuardPrompt_and_LlamaGuardResponse_label"
+    ] = concatenation_result.apply(
+        generate_guard_LlamaGuardPrompt_and_LlamaGuardResponse_label, axis=1
+    )
+
+    # guard_LlamaGuardPrompt_and_LlamaGuardResponse_total_time
+    def generate_guard_LlamaGuardPrompt_and_LlamaGuardResponse_total_time(row):
+        total_time = row["guard_LlamaGuardPrompt_time"]
+
+        if row["guard_LlamaGuardPrompt_label"]:
+            pass
+        else:
+            total_time += row["target_model_inference_time"]
+            total_time += row["guard_LlamaGuardResponse_time"]
+
+        return total_time
+
+    concatenation_result[
+        "guard_LlamaGuardPrompt_and_LlamaGuardResponse_total_time"
+    ] = concatenation_result.apply(
+        generate_guard_LlamaGuardPrompt_and_LlamaGuardResponse_total_time, axis=1
     )
 
     # guard_LlamaGuardPrompt_and_LlamaGuardPromptResponse_label
@@ -367,19 +413,21 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
 
     rows = []
     for guard_name in [
-            "NA",
-            "LlamaGuardPrompt",
-            "LlamaGuardPromptResponse",
-            "LlamaGuardPrompt_and_LlamaGuardPromptResponse",
-            "PromptGuard",
-            "sandbox_5",
-            "sandbox_10",
-            "sandbox_15",
-            "sandbox_20",
-            "sandbox_25",
-            "sandbox_30",
-            "sandbox_35",
-        ]:
+        "NA",
+        "LlamaGuardPrompt",
+        "LlamaGuardResponse",
+        "LlamaGuardPromptResponse",
+        "LlamaGuardPrompt_and_LlamaGuardResponse",
+        "LlamaGuardPrompt_and_LlamaGuardPromptResponse",
+        "PromptGuard",
+        "sandbox_5",
+        "sandbox_10",
+        "sandbox_15",
+        "sandbox_20",
+        "sandbox_25",
+        "sandbox_30",
+        "sandbox_35",
+    ]:
         row = handle_setting(
             transformation_result,
             ground_truth_column,
