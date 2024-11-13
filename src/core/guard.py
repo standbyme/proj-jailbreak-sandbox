@@ -47,7 +47,7 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
     def __init__(self) -> None:
         super().__init__()
 
-        model_id = "meta-llama/Llama-Guard-3-8B"
+        model_id = "meta-llama/Meta-Llama-Guard-2-8B"
         assert torch.cuda.is_available()
 
         self.device = "cuda"
@@ -59,10 +59,10 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
         self.model = AutoModelForCausalLM.from_pretrained(
             model_id, trust_remote_code=True, device_map=self.device
         )
-        # Raise an error if the model is LlamaGuard-3-8B
-        # self.model.generation_config.pad_token_id = (
-        #     self.model.generation_config.eos_token_id
-        # )
+        # This Line Raises an error if the model is LlamaGuard-3-8B
+        self.model.generation_config.pad_token_id = (
+            self.model.generation_config.eos_token_id
+        )
 
     def evaluate(self, prompt: str, responses: List[str]) -> List[bool]:
         self.tc.assertIsNotNone(self.is_consider_prompt)
@@ -100,7 +100,8 @@ class LlamaGuardBatchEvaluation(BatchEvaluation):
 
         result = []
         for output in outputs:
-            splitted_output = output.split("\n\n")
+            # If LlamaGuard-3-8B, please use \n\n instead of [/INST]
+            splitted_output = output.split("[/INST]")
             v = splitted_output[-1].strip().startswith("unsafe")
             result.append(v)
 
