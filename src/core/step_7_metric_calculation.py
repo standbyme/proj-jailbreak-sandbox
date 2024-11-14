@@ -250,16 +250,25 @@ def transformation(concatenation_result: pd.DataFrame):
     for draft_number in [5, 10, 15, 20, 25, 30, 35]:
 
         def generate_guard_sandbox_total_time(row):
-            return (
-                row[f"guard_sandbox_{draft_number}_time"]
-                + row[f"draft_model_{draft_number}_inference_time"]
-            )
+            # return (
+            #     row[f"guard_sandbox_{draft_number}_time"]
+            #     + row[f"draft_model_{draft_number}_inference_time"]
+            # )
 
+            total_time = row["guard_LlamaGuardPrompt_time"]
+
+            if row["guard_LlamaGuardPrompt_label"]:
+                pass
+            else:
+                total_time += row[f"draft_model_{draft_number}_inference_time"]
+                total_time += row[f"guard_sandbox_{draft_number}_time"]
+
+            return total_time
+    
         concatenation_result[f"guard_sandbox_{draft_number}_total_time"] = (
             concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
         )
 
-        # print("Attention: The time of guard_LlamaGuardPrompt_label is not added to total time.")
         def generate_guard_sandbox_label(row):
             return (
                 row["guard_LlamaGuardPrompt_label"]
