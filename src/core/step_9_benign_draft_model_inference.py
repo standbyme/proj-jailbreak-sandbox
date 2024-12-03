@@ -95,7 +95,7 @@ if __name__ == "__main__":
         "--draft_model_name",
         type=str,
         required=True,
-        choices=["opt-125m-AWQ"],
+        choices=["opt-125m-AWQ", "SmolLM-135M"],
     )
     parser.add_argument(
         "--draft_number",
