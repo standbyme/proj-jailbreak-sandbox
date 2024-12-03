@@ -54,10 +54,10 @@ def handle_dataset(
 
 
 def main():
-    step_9_benign_dataset_clean_result_path = Path().cwd() / "step_9_result"
+    benign_dataset_clean_result_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/just-eval")
 
     cleaned_dataset_file_path_list = list(
-        step_9_benign_dataset_clean_result_path.iterdir()
+        benign_dataset_clean_result_path.iterdir()
     )
     cleaned_dataset_file_path_list.sort()
 
@@ -66,21 +66,22 @@ def main():
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
+    result_path = Path().cwd() / "step_9_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
         file_path,
         "rb",
     ) as f:
-        step_9_pickle_data = pickle.load(f)
+        pickle_data = pickle.load(f)
 
     draft_model_id = get_model_id(draft_model_name)
     draft_model = HuggingFaceLanguageModel(draft_model_id)
     draft_model.warm_up()
 
-    handle_dataset(step_9_pickle_data, result_path, draft_model, dataset_name)
-    print("10: Done", flush=True)
+    handle_dataset(pickle_data, result_path, draft_model, dataset_name)
+    
+    print("9: Done", flush=True)
 
 
 if __name__ == "__main__":

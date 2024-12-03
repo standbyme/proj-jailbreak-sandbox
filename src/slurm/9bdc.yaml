@@ -1,8 +1,0 @@
-name: SB
-count: 57
-
-matrix:
-  target_model_name:
-    # - Meta-Llama-3-70B-Instruct-AWQ
-    - Qwen1.5-72B-Chat-AWQ
-    - Phi-3-medium-128k-instruct

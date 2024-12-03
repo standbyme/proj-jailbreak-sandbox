@@ -1,5 +1,5 @@
 name: SB
-count: 50
+count: 1
 
 matrix:
   draft_model_name:
