@@ -21,53 +21,49 @@ from src.core.utils import get_model_id
 
 def handle_dataset(
     pickle_data,
-    result_path,
-    target_model: HuggingFaceLanguageModel,
+    result_dir_path,
+    draft_model: HuggingFaceLanguageModel,
     dataset_name: str,
 ):
     intents = pickle_data
     checkpoint = []
 
     for intent in tqdm(intents):
-        try:
-            start_time = time.perf_counter()
-            responses = target_model.inference(
-                intent,
-                do_sample=True,
-                max_new_tokens=128,
-                num_return_sequences=draft_number,
-            )
-            end_time = time.perf_counter()
-            inference_time = end_time - start_time
+        start_time = time.perf_counter()
+        responses = draft_model.inference(
+            intent,
+            do_sample=True,
+            max_new_tokens=128,
+            num_return_sequences=draft_number,
+        )
+        end_time = time.perf_counter()
+        inference_time = end_time - start_time
 
-            assert len(responses) == draft_number
+        assert len(responses) == draft_number
 
-            checkpoint.append(
-                {"intent": intent, "responses": responses, "time": inference_time}
-            )
-        except RuntimeError:
-            # too long intent which is not suitable for the model
-            print(f"RuntimeError: {intent}",flush=True)
+        checkpoint.append(
+            {"intent": intent, "responses": responses, "time": inference_time}
+        )
 
-    with open(result_path / f"{dataset_name}.pkl", "wb") as f:
+    with open(result_dir_path / f"{dataset_name}.pkl", "wb") as f:
         pickle.dump(checkpoint, f)
 
 
 def main():
-    benign_dataset_clean_result_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/just-eval")
+    dataset_dir_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/just-eval")
 
-    cleaned_dataset_file_path_list = list(
-        benign_dataset_clean_result_path.iterdir()
+    dataset_file_path_list = list(
+        dataset_dir_path.iterdir()
     )
-    cleaned_dataset_file_path_list.sort()
+    dataset_file_path_list.sort()
 
-    file_path = cleaned_dataset_file_path_list[slurm_unit_index]
+    file_path = dataset_file_path_list[slurm_unit_index]
 
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
-    result_path.mkdir(parents=True, exist_ok=True)
+    result_dir_path = Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
+    result_dir_path.mkdir(parents=True, exist_ok=True)
 
     with open(
         file_path,
@@ -79,7 +75,7 @@ def main():
     draft_model = HuggingFaceLanguageModel(draft_model_id)
     draft_model.warm_up()
 
-    handle_dataset(pickle_data, result_path, draft_model, dataset_name)
+    handle_dataset(pickle_data, result_dir_path, draft_model, dataset_name)
     
     print("10: Done", flush=True)
 
