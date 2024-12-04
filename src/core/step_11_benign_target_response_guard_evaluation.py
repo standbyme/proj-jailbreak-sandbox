@@ -107,7 +107,7 @@ def main():
     ) as f:
         step_9_pickle_data = pickle.load(f)
 
-    handle_intent(step_9_pickle_data, result_path, guard, dataset_name)
+    handle_dataset(step_9_pickle_data, result_path, guard, dataset_name)
     print("11: Done", flush=True)
 
 
