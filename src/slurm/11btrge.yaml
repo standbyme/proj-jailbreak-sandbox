@@ -8,6 +8,6 @@ matrix:
     - Phi-3-medium-128k-instruct
   guard_name:
     - LlamaGuardPrompt
-    - LlamaGuardResponse
     - LlamaGuardPromptResponse
     - PromptGuard
+    - PerplexityGuardPrompt
