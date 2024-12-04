@@ -20,12 +20,12 @@ from src.core.utils import get_model_id
 
 
 def handle_dataset(
-    step_9_pickle_data,
+    pickle_data,
     result_path,
     target_model: HuggingFaceLanguageModel,
     dataset_name: str,
 ):
-    intents = step_9_pickle_data
+    intents = pickle_data
     checkpoint = []
 
     for intent in tqdm(intents):
@@ -66,7 +66,7 @@ def main():
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_9_result" / draft_model_name / f"{draft_number}"
+    result_path = Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
@@ -81,7 +81,7 @@ def main():
 
     handle_dataset(pickle_data, result_path, draft_model, dataset_name)
     
-    print("9: Done", flush=True)
+    print("10: Done", flush=True)
 
 
 if __name__ == "__main__":
