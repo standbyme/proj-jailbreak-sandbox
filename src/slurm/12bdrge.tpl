@@ -23,4 +23,4 @@ module load cudnn/cuda-12.1_8.9.lua
 unset PYTHONPATH
 
 
-./venv/bin/python ../src/core/step_11_benign_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --draft_model_name {{ draft_model_name }} --draft_number {{ draft_number }}
+./venv/bin/python ../src/core/step_12_benign_draft_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --draft_model_name {{ draft_model_name }} --draft_number {{ draft_number }}

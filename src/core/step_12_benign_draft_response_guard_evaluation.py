@@ -69,7 +69,7 @@ def main():
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_11_result" / draft_model_name / f"{draft_number}"
+    result_path = Path().cwd() / "step_12_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
@@ -79,7 +79,7 @@ def main():
         step_10_pickle_data = pickle.load(f)
 
     handle_dataset(step_10_pickle_data, result_path, guard, dataset_name)
-    print("11: Done", flush=True)
+    print("12: Done", flush=True)
 
 
 if __name__ == "__main__":
