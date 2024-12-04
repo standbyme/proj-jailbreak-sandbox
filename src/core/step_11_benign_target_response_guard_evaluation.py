@@ -2,9 +2,8 @@ import argparse
 import pickle
 import sys
 import time
-import unittest
 from pathlib import Path
-from typing import List
+import unittest
 
 from tqdm import tqdm
 
@@ -16,35 +15,38 @@ def add_proj_to_PYTHONPATH():
 
 
 add_proj_to_PYTHONPATH()
-from src.core.guard import BatchEvaluation, LlamaGuardBatchEvaluation
+from src.core.guard import (
+    BatchEvaluation,
+    LlamaGuardBatchEvaluation,
+    PerplexityBatchEvaluation,
+    PromptGuardBatchEvaluation,
+)
 
 
-def handle_dataset(
-    step_10_pickle_data, result_path, guard: BatchEvaluation, dataset_name: str
-):
-    items = step_10_pickle_data
+def handle_dataset(step_9_pickle_data, result_path, guard: BatchEvaluation, dataset_name):
+    items = step_9_pickle_data
 
     checkpoint = []
 
     for item in tqdm(items):
         intent = item["intent"]
-        responses: List[str] = item["responses"]
+        response = item["response"]
 
         tc.assertIsInstance(intent, str)
-        tc.assertIsInstance(responses, list)
+        tc.assertIsInstance(response, str)
 
         start_time = time.perf_counter()
-        evaluation_result = guard.evaluate(intent, responses)
+        evaluation_result = guard.evaluate(intent, [response])
         end_time = time.perf_counter()
         guard_time = end_time - start_time
 
-        tc.assertEqual(len(evaluation_result), len(responses))
-        labels = evaluation_result
+        assert len(evaluation_result) == 1
+        label = evaluation_result[0]
 
         v = {
             "intent": intent,
-            "responses": responses,
-            "labels": labels,
+            "response": response,
+            "label": label,
             "time": guard_time,
         }
         checkpoint.append(v)
@@ -53,32 +55,59 @@ def handle_dataset(
         pickle.dump(checkpoint, f)
 
 
-def main():
-    guard = LlamaGuardBatchEvaluation()
-    guard.set_is_consider_prompt(False)
-    guard.set_is_consider_response(True)
-    guard.warmup()
+def get_guard(guard_name) -> BatchEvaluation:
+    if guard_name == "LlamaGuardPrompt":
+        v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(True)
+        v.set_is_consider_response(False)
+    elif guard_name == "LlamaGuardResponse":
+        v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(False)
+        v.set_is_consider_response(True)
+    elif guard_name == "LlamaGuardPromptResponse":
+        v = LlamaGuardBatchEvaluation()
+        v.set_is_consider_prompt(True)
+        v.set_is_consider_response(True)
+    elif guard_name == "PerplexityGuardPrompt":
+        v = PerplexityBatchEvaluation()
+    elif guard_name == "PromptGuard":
+        v = PromptGuardBatchEvaluation()
+    else:
+        raise ValueError(f"Unknown guard_name: {guard_name}")
 
-    step_10_result_path = (
-        Path().cwd() / "step_10_result" / draft_model_name / f"{draft_number}"
+    v.warmup()
+    return v
+
+
+def main():
+    guard = get_guard(guard_name)
+
+    step_9_result_path = (
+        Path().cwd()
+        / "step_9_result"
+        / target_model_name
     )
 
-    cleaned_dataset_file_path_list = list(step_10_result_path.iterdir())
+    cleaned_dataset_file_path_list = list(step_9_result_path.iterdir())
     cleaned_dataset_file_path_list.sort()
     file_path = cleaned_dataset_file_path_list[slurm_unit_index]
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_11_result" / draft_model_name / f"{draft_number}"
+    result_path = (
+        Path().cwd()
+        / "step_11_result"
+        / target_model_name
+    )
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
         file_path,
         "rb",
     ) as f:
-        step_10_pickle_data = pickle.load(f)
+        step_9_pickle_data = pickle.load(f)
 
-    handle_dataset(step_10_pickle_data, result_path, guard, dataset_name)
+    handle_intent(step_9_pickle_data, result_path, guard, dataset_name)
     print("11: Done", flush=True)
 
 
@@ -91,21 +120,32 @@ if __name__ == "__main__":
         required=True,
     )
     parser.add_argument(
-        "--draft_model_name",
+        "--target_model_name",
         type=str,
         required=True,
-        choices=["opt-125m-AWQ", "SmolLM-135M"],
+        choices=[
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ],
     )
     parser.add_argument(
-        "--draft_number",
-        type=int,
+        "--guard_name",
+        type=str,
         required=True,
+        choices=[
+            "LlamaGuardPrompt",
+            "LlamaGuardResponse",
+            "LlamaGuardPromptResponse",
+            "PerplexityGuardPrompt",
+            "PromptGuard",
+        ],
     )
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
-    draft_model_name = args.draft_model_name
-    draft_number = args.draft_number
+    target_model_name = args.target_model_name
+    guard_name = args.guard_name
 
     tc = unittest.TestCase()
 
