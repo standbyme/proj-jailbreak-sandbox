@@ -1,13 +1,11 @@
 import argparse
 import pickle
 import sys
-import time
 import unittest
 from pathlib import Path
 from typing import Dict, List
 
 import matplotlib.pyplot as plt
-import pandas as pd
 import seaborn as sns
 from tqdm import tqdm
 
