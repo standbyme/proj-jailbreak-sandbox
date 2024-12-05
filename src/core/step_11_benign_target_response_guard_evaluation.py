@@ -98,6 +98,7 @@ def main():
         Path().cwd()
         / "step_11_result"
         / target_model_name
+        / guard_name
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
