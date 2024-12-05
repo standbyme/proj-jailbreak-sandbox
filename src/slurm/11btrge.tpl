@@ -22,4 +22,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-./venv/bin/python ../src/core/step_5_target_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --guard_name {{ guard_name }}
+./venv/bin/python ../src/core/step_11_benign_target_response_guard_evaluation.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --target_model_name {{ target_model_name }} --guard_name {{ guard_name }}

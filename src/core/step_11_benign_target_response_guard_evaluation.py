@@ -135,7 +135,6 @@ if __name__ == "__main__":
         required=True,
         choices=[
             "LlamaGuardPrompt",
-            "LlamaGuardResponse",
             "LlamaGuardPromptResponse",
             "PerplexityGuardPrompt",
             "PromptGuard",
