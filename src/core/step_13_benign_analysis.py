@@ -29,11 +29,9 @@ def figure(
     # set x axis unit to 10
     plt.xticks(range(0, 100, 10))
     # set y axis unit to 0.01
-    plt.yticks(list(map(lambda x: x/100, range(90, 101, 1))))
-
+    plt.yticks(list(map(lambda x: x / 100, range(90, 101, 1))))
 
     # tc.assertEqual(list(DSR_dict.keys()), list(accuracy_dict.keys()))
-
 
     # tc.assertEqual(len(DSR_dict), len(accuracy_dict))
     # tc.assertEqual(len(DSR_dict), 10)
@@ -86,17 +84,21 @@ def main():
     #     / draft_model_name
     # )
 
-    step_11_result_path = (
-        Path().cwd() / "step_11_result" / draft_model_name / f"{draft_number}"
+    step_12_result_path = (
+        Path().cwd() / "step_12_result" / draft_model_name / f"{draft_number}"
     )
 
-    cleaned_dataset_file_path_list = list(step_11_result_path.iterdir())
-    cleaned_dataset_file_path_list.sort()
-    file_path = cleaned_dataset_file_path_list[slurm_unit_index]
+    benign_draft_response_guard_evaluation_result_file_path_list = list(
+        step_12_result_path.iterdir()
+    )
+    benign_draft_response_guard_evaluation_result_file_path_list.sort()
+    file_path = benign_draft_response_guard_evaluation_result_file_path_list[
+        slurm_unit_index
+    ]
     dataset_name = file_path.name.split(".")[0]
     print(f"dataset_name: {dataset_name}", flush=True)
 
-    result_path = Path().cwd() / "step_12_result" / draft_model_name / f"{draft_number}"
+    result_path = Path().cwd() / "step_13_result" / draft_model_name / f"{draft_number}"
     result_path.mkdir(parents=True, exist_ok=True)
 
     with open(
@@ -119,43 +121,22 @@ if __name__ == "__main__":
         type=int,
         required=True,
     )
-    # parser.add_argument(
-    #     "--target_model_name",
-    #     type=str,
-    #     required=True,
-    #     choices=["Meta-Llama-3-70B-Instruct-AWQ"],
-    # )
-    # parser.add_argument(
-    #     "--generation_name",
-    #     type=str,
-    #     required=True,
-    #     choices=["GCG", "AutoDAN"],
-    # )
     parser.add_argument(
         "--draft_model_name",
         type=str,
         required=True,
-        choices=["opt-125m-AWQ"],
+        choices=["SmolLM-135M", "opt-125m-AWQ"],
     )
     parser.add_argument(
         "--draft_number",
         type=int,
         required=True,
     )
-    # parser.add_argument(
-    #     "--dataset_name",
-    #     type=str,
-    #     required=True,
-    #     choices=["RPAB"],
-    # )
 
     args = parser.parse_args()
     slurm_unit_index = args.slurm_unit_index
-    # target_model_name = args.target_model_name
-    # generation_name = args.generation_name
     draft_model_name = args.draft_model_name
     draft_number = args.draft_number
-    # dataset_name = args.dataset_name
 
     tc = unittest.TestCase()
 
