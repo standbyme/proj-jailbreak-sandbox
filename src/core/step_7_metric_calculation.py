@@ -168,6 +168,7 @@ def concatenation(
         "LlamaGuardPrompt",
         "LlamaGuardPromptResponse",
         "PromptGuard",
+        "GuardSafeGuardPrompt",
         "PerplexityGuard",
     ]:
         step_5_result = read_step_5_result(step_5_result_path, guard_name)
@@ -265,7 +266,7 @@ def transformation(concatenation_result: pd.DataFrame):
                 total_time += row[f"guard_sandbox_{draft_number}_time"]
 
             return total_time
-    
+
         concatenation_result[f"guard_sandbox_{draft_number}_total_time"] = (
             concatenation_result.apply(generate_guard_sandbox_total_time, axis=1)
         )
@@ -290,10 +291,20 @@ def transformation(concatenation_result: pd.DataFrame):
         )
     )
 
+    # guard_GuardSafeGuardPrompt_total_time
+    def generate_guard_GuardSafeGuardPrompt_total_time(row):
+        return row["guard_GuardSafeGuardPrompt_time"]
+    
+    concatenation_result["guard_GuardSafeGuardPrompt_total_time"] = (
+        concatenation_result.apply(
+            generate_guard_GuardSafeGuardPrompt_total_time, axis=1
+        )
+    )
+
     # guard_PerplexityGuard_total_time
     def generate_guard_PerplexityGuard_total_time(row):
         return row["guard_PerplexityGuard_time"]
-    
+
     concatenation_result["guard_PerplexityGuard_total_time"] = (
         concatenation_result.apply(
             generate_guard_PerplexityGuard_total_time, axis=1
@@ -392,6 +403,7 @@ def reduction(transformation_result: pd.DataFrame, ground_truth_column: str):
         "LlamaGuardPromptResponse",
         "LlamaGuardPrompt_and_LlamaGuardPromptResponse",
         "PromptGuard",
+        "GuardSafeGuardPrompt",
         "PerplexityGuard",
         "sandbox_5",
         "sandbox_10",
