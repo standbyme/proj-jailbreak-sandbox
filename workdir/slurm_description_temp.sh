@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-#SBATCH --mail-user=hongyu@purdue.edu
+#SBATCH --mail-user=x@x.x
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
@@ -17,4 +17,4 @@ module load cudnn/cuda-12.1_8.9.lua
 
 unset PYTHONPATH
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/workdir/temp_copy.py
+/depot/anonymousz/data/anonymoush/venv/bin/python /scratch/gilbreth/anonymoush/project/sandbox/proj-jailbreak-sandbox/workdir/temp_copy.py

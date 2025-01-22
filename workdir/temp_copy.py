@@ -13,7 +13,7 @@ def collect_leaf_dirs(path):
 
 
 # Example usage
-path = "/scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/workdir/step_6_result"
+path = "/scratch/gilbreth/anonymoush/project/sandbox/proj-jailbreak-sandbox/workdir/step_6_result"
 leaf_directories = collect_leaf_dirs(path)
 for leaf_dir in leaf_directories:
     # get the file count in the leaf directory

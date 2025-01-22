@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-#SBATCH --mail-user=hongyu@purdue.edu
+#SBATCH --mail-user=x@x.x
 
 #SBATCH --mail-type=END
 
@@ -23,4 +23,4 @@ unset PYTHONPATH
 
 # draft_model_name="opt-125m-AWQ"
 
-/depot/zcelik/data/hongyu/venv/bin/python /scratch/gilbreth/hongyu/project/sandbox/proj-jailbreak-sandbox/src/core/step_12_benign_analysis.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --draft_model_name opt-125m-AWQ --draft_number {{project_name}}
+/depot/anonymousz/data/anonymoush/venv/bin/python /scratch/gilbreth/anonymoush/project/sandbox/proj-jailbreak-sandbox/src/core/step_12_benign_analysis.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --draft_model_name opt-125m-AWQ --draft_number {{project_name}}
