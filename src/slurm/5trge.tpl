@@ -15,10 +15,10 @@
 unset PYTHONPATH
 
 module purge
-module load gcc/12.3.0.lua
-module load openmpi/4.1.5-gpu-cuda12.lua
-module load cuda/12.1.1.lua
-module load cudnn/cuda-12.1_8.9.lua
+module load gcc/11.5.0.lua
+module load openmpi/5.0.5.lua
+module load cuda/12.6.0.lua
+module load cudnn/9.2.0.82-12.lua
 
 unset PYTHONPATH
 
