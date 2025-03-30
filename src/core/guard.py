@@ -244,7 +244,7 @@ class GradSafeBatchEvaluation(BatchEvaluation):
         # For GradSafe-Zero, average all cosine similarites as one score
         cos_all = [sum(feature) / len(feature) for feature in cos_all]
 
-        predicted_labels = [1 if feature >= 0.25 else 0 for feature in cos_all]
+        predicted_labels = [True if feature >= 0.25 else False for feature in cos_all]
 
         return predicted_labels
 

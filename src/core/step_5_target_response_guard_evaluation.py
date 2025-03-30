@@ -76,7 +76,7 @@ def get_guard(guard_name) -> BatchEvaluation:
         v = PromptGuardBatchEvaluation()
     elif guard_name == "AllTrueGuard":
         v = AllTrueBatchEvaluation()
-    elif guard_name == "GuardSafeGuardPrompt":
+    elif guard_name == "GradSafeGuardPrompt":
         v = GradSafeBatchEvaluation()
     else:
         raise ValueError(f"Unknown guard_name: {guard_name}")
@@ -156,7 +156,7 @@ if __name__ == "__main__":
             "PerplexityGuardPrompt",
             "PromptGuard",
             "AllTrueGuard",
-            "GuardSafeGuardPrompt"
+            "GradSafeGuardPrompt"
         ],
     )
 
