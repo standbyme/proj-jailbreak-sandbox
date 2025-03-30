@@ -43,6 +43,10 @@ def get_model_id(model_name: str):
         "Qwen1.5-72B-Chat-AWQ": "Qwen/Qwen1.5-72B-Chat-AWQ",
         "Phi-3-medium-128k-instruct": "microsoft/Phi-3-medium-128k-instruct",
         "SmolLM-135M": "HuggingFaceTB/SmolLM-135M",
+        "Qwen2.5-0.5B": "Qwen/Qwen2.5-0.5B",
+        "Llama-3.2-1B": "meta-llama/Llama-3.2-1B",
+        "SmolLM2-135M": "HuggingFaceTB/SmolLM2-135M",
+        "SmolLM2-360M": "HuggingFaceTB/SmolLM2-360M",
     }
 
     return database[model_name]

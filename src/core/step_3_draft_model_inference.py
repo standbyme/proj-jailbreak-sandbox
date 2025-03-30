@@ -107,7 +107,14 @@ if __name__ == "__main__":
         "--draft_model_name",
         type=str,
         required=True,
-        choices=["opt-125m-AWQ", "SmolLM-135M"],
+        choices=[
+            "opt-125m-AWQ",
+            "SmolLM-135M",
+            "Qwen2.5-0.5B",
+            "Llama-3.2-1B",
+            "SmolLM2-135M",
+            "SmolLM2-360M",
+        ],
     )
     parser.add_argument(
         "--generation_name",
