@@ -19,7 +19,9 @@ class LanguageModel(ABC):
         pass
 
     def warm_up(self):
-        self.inference("How are you?", do_sample=True, max_new_tokens=128, num_return_sequences=2)
+        self.inference(
+            "How are you?", do_sample=True, max_new_tokens=128, num_return_sequences=2
+        )
 
 
 class HuggingFaceLanguageModel(LanguageModel):
@@ -27,11 +29,20 @@ class HuggingFaceLanguageModel(LanguageModel):
         assert torch.cuda.is_available()
 
         args = {}
-        if model_id == "HuggingFaceTB/SmolLM-135M":
+        if (
+            model_id == "HuggingFaceTB/SmolLM-135M"
+            or model_id == "meta-llama/Llama-3.2-1B"
+            or model_id == "HuggingFaceTB/SmolLM2-135M"
+            or model_id == "HuggingFaceTB/SmolLM2-360M"
+        ):
             args["torch_dtype"] = torch.bfloat16
 
         self.pipe = pipeline(
-            "text-generation", model=model_id, device_map="auto", return_full_text=False, **args
+            "text-generation",
+            model=model_id,
+            device_map="auto",
+            return_full_text=False,
+            **args
         )
 
     def inference(
