@@ -12,7 +12,11 @@ matrix:
     - Qwen1.5-72B-Chat-AWQ
     - Phi-3-medium-128k-instruct
   draft_model_name:
-    - opt-125m-AWQ
-    - SmolLM-135M
+    # - opt-125m-AWQ
+    # - SmolLM-135M
+    - Qwen2.5-0.5B
+    - Llama-3.2-1B
+    - SmolLM2-135M
+    - SmolLM2-360M
   guard_name:
     - LlamaGuardResponse
