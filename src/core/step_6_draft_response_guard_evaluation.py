@@ -80,7 +80,6 @@ def main():
         / dataset_name
         / target_model_name
         / generation_name
-        / guard_name
         / draft_model_name
         / f"{draft_number}"
     )
@@ -154,6 +153,8 @@ if __name__ == "__main__":
     dataset_name = args.dataset_name
     guard_name = args.guard_name
     draft_model_name = args.draft_model_name
+
+    assert guard_name == "LlamaGuardResponse"
 
     guard = get_guard(guard_name)
 
