@@ -91,7 +91,7 @@ def handle_dataset(
 
 
 def main():
-    dataset_dir_path = Path("/depot/anonymousz/data/anonymoush/sandbox/benign/prompts")
+    dataset_dir_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/prompts")
 
     result_dir_path = Path().cwd() / "step_9_result" / target_model_name
     result_dir_path.mkdir(parents=True, exist_ok=True)

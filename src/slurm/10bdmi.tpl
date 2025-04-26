@@ -1,13 +1,13 @@
 #!/bin/sh -l
 
-#SBATCH --mail-user=x@x.x
+#SBATCH --mail-user=hongyu@purdue.edu
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A standby
 #SBATCH --time=04:00:00
 #SBATCH --gpus-per-node=1
-#SBATCH --constraint=A100-80GB
+#SBATCH --constraint=A100
 #SBATCH --ntasks=1 --cpus-per-task=16
 #SBATCH --mem=32G
 #SBATCH --job-name={{task_name}}

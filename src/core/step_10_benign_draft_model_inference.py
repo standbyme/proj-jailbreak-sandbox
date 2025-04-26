@@ -50,7 +50,7 @@ def handle_dataset(
 
 
 def main():
-    dataset_dir_path = Path("/depot/anonymousz/data/anonymoush/sandbox/benign/just-eval")
+    dataset_dir_path = Path("/depot/zcelik/data/hongyu/sandbox/benign/just-eval")
 
     dataset_file_path_list = list(
         dataset_dir_path.iterdir()
@@ -92,7 +92,14 @@ if __name__ == "__main__":
         "--draft_model_name",
         type=str,
         required=True,
-        choices=["opt-125m-AWQ", "SmolLM-135M"],
+        choices=[
+            "opt-125m-AWQ",
+            "SmolLM-135M",
+            "Qwen2.5-0.5B",
+            "Llama-3.2-1B",
+            "SmolLM2-135M",
+            "SmolLM2-360M",
+        ],
     )
     parser.add_argument(
         "--draft_number",
