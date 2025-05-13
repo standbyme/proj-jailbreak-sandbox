@@ -17,8 +17,8 @@ add_proj_to_PYTHONPATH()
 
 def handle_intent(step_6_pickle_data, new_step_6_result_path):
     for attempt in step_6_pickle_data["attempts"]:
-        attempt["responses"] = attempt["responses"][0]
-        attempt["labels"] = attempt["labels"][0]
+        attempt["responses"] = [attempt["responses"][0]]
+        attempt["labels"] = [attempt["labels"][0]]
 
     with open(new_step_6_result_path / f"{slurm_unit_index}.pkl", "wb") as f:
         pickle.dump(step_6_pickle_data, f)
