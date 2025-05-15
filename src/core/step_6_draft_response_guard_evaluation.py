@@ -85,6 +85,10 @@ def main():
     )
     result_path.mkdir(parents=True, exist_ok=True)
 
+    p = result_path / f"{slurm_unit_index}.pkl"
+    if p.exists():
+        return
+
     with open(
         step_3_result_path / f"{slurm_unit_index}.pkl",
         "rb",
@@ -147,9 +151,9 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    slurm_unit_index = args.slurm_unit_index
-    target_model_name = args.target_model_name
-    generation_name = args.generation_name
+    # slurm_unit_index = args.slurm_unit_index
+    # target_model_name = args.target_model_name
+    # generation_name = args.generation_name
     dataset_name = args.dataset_name
     guard_name = args.guard_name
     draft_model_name = args.draft_model_name
@@ -158,5 +162,12 @@ if __name__ == "__main__":
 
     guard = get_guard(guard_name)
 
-    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
-        main()
+    for target_model_name in tqdm([
+            "Meta-Llama-3-70B-Instruct-AWQ",
+            "Qwen1.5-72B-Chat-AWQ",
+            "Phi-3-medium-128k-instruct",
+        ]):
+        for generation_name in ["GCG", "AutoDAN"]:
+            for draft_number in [30, 35]:
+                for slurm_unit_index in range(50):
+                    main()
