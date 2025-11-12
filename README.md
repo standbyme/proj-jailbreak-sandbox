@@ -1,9 +1,9 @@
 # proj-jailbreak-sandbox
 
 ```
-pip install pandas accelerator transformers autoawq python-dotenv openai tenacity nltk scikit-learn matplotlib seaborn
+uv pip install pandas accelerator transformers autoawq python-dotenv openai tenacity nltk scikit-learn matplotlib seaborn
 ```
 
 ```
-fastchat
+uv pip install fastchat
 ```
