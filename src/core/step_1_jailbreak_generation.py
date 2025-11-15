@@ -32,7 +32,7 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
         model_name="llama-3",
     )
 
-    dataset = JailbreakDataset.load_csv(path=f"dataset/{dataset_name}.csv")
+    dataset = JailbreakDataset.load_jsonl(path=f"dataset/{dataset_name}.jsonl")
 
     if generation_name == "PAIR":
         attack_model = from_pretrained(
