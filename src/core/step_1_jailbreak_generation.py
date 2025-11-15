@@ -84,3 +84,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
+
+    main(
+        dataset_name=args.dataset_name,
+        generation_name=args.generation_name,
+        target_model_name=args.target_model_name,
+    )
