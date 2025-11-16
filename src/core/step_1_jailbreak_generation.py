@@ -5,15 +5,17 @@ import unittest
 from pathlib import Path
 
 from dotenv import load_dotenv
-from easyjailbreak.attacker.PAIR_chao_2023 import PAIR
-from easyjailbreak.attacker.TAP_Mehrotra_2023 import TAP
+from easyjailbreak.attacker import GPTFuzzer
 from easyjailbreak.attacker.Cipher_Yuan_2023 import Cipher
 from easyjailbreak.attacker.DeepInception_Li_2023 import DeepInception
-from easyjailbreak.attacker import GPTFuzzer
 from easyjailbreak.attacker.ICA_wei_2023 import ICA
+from easyjailbreak.attacker.PAIR_chao_2023 import PAIR
+from easyjailbreak.attacker.TAP_Mehrotra_2023 import TAP
 from easyjailbreak.datasets import JailbreakDataset
-from easyjailbreak.models.huggingface_model import from_pretrained
+from easyjailbreak.models.huggingface_model import (HuggingfaceModel,
+                                                    from_pretrained)
 from easyjailbreak.models.openai_model import OpenaiModel
+from transformers import RobertaForSequenceClassification, RobertaTokenizer
 
 
 def add_proj_to_PYTHONPATH():
@@ -76,10 +78,14 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
             jailbreak_datasets=dataset,
         )
     elif generation_name == "GPTFuzzer":
+        model_path = 'hubert233/GPTFuzz'
+        judge_model = RobertaForSequenceClassification.from_pretrained(model_path)
+        judge_tokenizer = RobertaTokenizer.from_pretrained(model_path)
+        judge_eval_model = HuggingfaceModel(model=judge_model, tokenizer=judge_tokenizer, model_name='zero_shot')
         attacker = GPTFuzzer(
             attack_model=attack_model_gpt,
             target_model=target_model,
-            eval_model=None,
+            eval_model=judge_eval_model,
             jailbreak_datasets=dataset,
         )
     elif generation_name == "ICA":

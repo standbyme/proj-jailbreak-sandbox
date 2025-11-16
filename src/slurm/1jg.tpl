@@ -5,6 +5,7 @@
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
 #SBATCH -A antoniob
+#SBATCH --qos=normal
 #SBATCH --time=14-00:00:00
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1 --cpus-per-task=16
