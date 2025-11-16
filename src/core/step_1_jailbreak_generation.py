@@ -91,7 +91,17 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
 
     save_dir = Path().cwd() / "step_1_result" / dataset_name / target_model_name
     save_dir.mkdir(parents=True, exist_ok=True)
-    attacker.attack(save_path=save_dir / f"{generation_name}.jsonl")
+
+    save_path = save_dir / f"{generation_name}.jsonl"
+
+    if generation_name in ["PAIR", "TAP"]:
+        attacker.attack(save_path=save_path)
+    elif generation_name in ["Cipher", "DeepInception", "ICA"]:
+        attacker.attack_results.save_to_jsonl(save_path)
+    elif generation_name == "GPTFuzzer":
+        attacker.jailbreak_datasets.save_to_jsonl(save_path)
+    else:
+        raise ValueError(f"Unknown method: {generation_name}")
 
 
 if __name__ == "__main__":
