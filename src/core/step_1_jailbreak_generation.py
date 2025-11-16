@@ -7,6 +7,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 from easyjailbreak.attacker.PAIR_chao_2023 import PAIR
 from easyjailbreak.attacker.TAP_Mehrotra_2023 import TAP
+from easyjailbreak.attacker.Cipher_Yuan_2023 import Cipher
+from easyjailbreak.attacker.DeepInception_Li_2023 import DeepInception
+from easyjailbreak.attacker import GPTFuzzer
+from easyjailbreak.attacker.ICA_wei_2023 import ICA
 from easyjailbreak.datasets import JailbreakDataset
 from easyjailbreak.models.huggingface_model import from_pretrained
 from easyjailbreak.models.openai_model import OpenaiModel
@@ -53,12 +57,34 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
             target_model=target_model,
             eval_model=eval_model,
             jailbreak_datasets=dataset,
-            tree_width=10,
-            tree_depth=10,
-            root_num=1,
-            branching_factor=4,
-            keep_last_n=3,
-            max_n_attack_attempts=5,
+        )
+    elif generation_name == "Cipher":
+        attacker = Cipher(
+            attack_model=None,
+            target_model=target_model,
+            eval_model=eval_model,
+            jailbreak_datasets=dataset,
+        )
+    elif generation_name == "DeepInception":
+        attacker = DeepInception(
+            attack_model=None,
+            target_model=target_model,
+            eval_model=eval_model,
+            jailbreak_datasets=dataset,
+        )
+    elif generation_name == "GPTFuzzer":
+        attacker = GPTFuzzer(
+            attack_model=eval_model,
+            target_model=target_model,
+            eval_model=eval_model,
+            jailbreak_datasets=dataset,
+        )
+    elif generation_name == "ICA":
+        attacker = ICA(
+            target_model=target_model,
+            jailbreak_datasets=dataset,
+            attack_model=None,
+            eval_model=None,
         )
     else:
         raise ValueError(f"Unknown method: {generation_name}")
@@ -87,7 +113,7 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["PAIR", "TAP"],
+        choices=["PAIR", "TAP", "Cipher", "DeepInception", "GPTFuzzer", "ICA"],
     )
     parser.add_argument(
         "--dataset_name",
