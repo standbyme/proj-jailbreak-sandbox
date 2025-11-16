@@ -40,7 +40,10 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
     attack_model = from_pretrained(
         model_name_or_path="lmsys/vicuna-13b-v1.5", model_name="vicuna_v1.1"
     )
-    eval_model = OpenaiModel(model_name="gpt-5-nano-2025-08-07", api_keys=api_key)
+    attack_model_gpt = OpenaiModel(
+        model_name="gpt-5-nano-2025-08-07", api_keys=api_key, mock=False
+    )
+    eval_model = OpenaiModel(model_name="gpt-5-nano-2025-08-07", api_keys=api_key, mock=True)
 
     dataset = JailbreakDataset.load_jsonl(path=f"dataset/{dataset_name}.jsonl")
 
@@ -74,9 +77,9 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
         )
     elif generation_name == "GPTFuzzer":
         attacker = GPTFuzzer(
-            attack_model=eval_model,
+            attack_model=attack_model_gpt,
             target_model=target_model,
-            eval_model=eval_model,
+            eval_model=None,
             jailbreak_datasets=dataset,
         )
     elif generation_name == "ICA":
@@ -97,8 +100,10 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
     if generation_name in ["PAIR", "TAP"]:
         attacker.attack(save_path=save_path)
     elif generation_name in ["Cipher", "DeepInception", "ICA"]:
+        attacker.attack()
         attacker.attack_results.save_to_jsonl(save_path)
     elif generation_name == "GPTFuzzer":
+        attacker.attack()
         attacker.jailbreak_datasets.save_to_jsonl(save_path)
     else:
         raise ValueError(f"Unknown method: {generation_name}")
@@ -109,6 +114,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
+    parser.add_argument(
+        "--slurm_unit_index",
+        type=int,
+        required=True,
+    )
     parser.add_argument(
         "--target_model_name",
         type=str,
