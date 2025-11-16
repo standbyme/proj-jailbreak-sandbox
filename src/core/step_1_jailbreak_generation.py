@@ -6,6 +6,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from easyjailbreak.attacker.PAIR_chao_2023 import PAIR
+from easyjailbreak.attacker.TAP_Mehrotra_2023 import TAP
 from easyjailbreak.datasets import JailbreakDataset
 from easyjailbreak.models.huggingface_model import from_pretrained
 from easyjailbreak.models.openai_model import OpenaiModel
@@ -32,24 +33,37 @@ def main(dataset_name: str, generation_name: str, target_model_name: str):
         model_name="llama-3",
     )
 
+    attack_model = from_pretrained(
+        model_name_or_path="lmsys/vicuna-13b-v1.5", model_name="vicuna_v1.1"
+    )
+    eval_model = OpenaiModel(model_name="gpt-5-nano-2025-08-07", api_keys=api_key)
+
     dataset = JailbreakDataset.load_jsonl(path=f"dataset/{dataset_name}.jsonl")
 
     if generation_name == "PAIR":
-        attack_model = from_pretrained(
-            model_name_or_path="lmsys/vicuna-13b-v1.5", model_name="vicuna_v1.1"
-        )
-        eval_model = OpenaiModel(model_name="gpt-5-nano-2025-08-07", api_keys=api_key)
-
         attacker = PAIR(
             attack_model=attack_model,
             target_model=target_model,
             eval_model=eval_model,
             jailbreak_datasets=dataset,
         )
+    elif generation_name == "TAP":
+        attacker = TAP(
+            attack_model=attack_model,
+            target_model=target_model,
+            eval_model=eval_model,
+            jailbreak_datasets=dataset,
+            tree_width=10,
+            tree_depth=10,
+            root_num=1,
+            branching_factor=4,
+            keep_last_n=3,
+            max_n_attack_attempts=5,
+        )
     else:
         raise ValueError(f"Unknown method: {generation_name}")
 
-    save_dir = Path().cwd() / "step_1_result" / "RPAB" / target_model_name
+    save_dir = Path().cwd() / "step_1_result" / dataset_name / target_model_name
     save_dir.mkdir(parents=True, exist_ok=True)
     attacker.attack(save_path=save_dir / f"{generation_name}.jsonl")
 
@@ -73,13 +87,13 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["PAIR"],
+        choices=["PAIR", "TAP"],
     )
     parser.add_argument(
         "--dataset_name",
         type=str,
         required=True,
-        choices=["RPAB"],
+        choices=["RPAB", "mini_RPAB"],
     )
 
     args = parser.parse_args()
