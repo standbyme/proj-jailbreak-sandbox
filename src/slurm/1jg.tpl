@@ -9,9 +9,9 @@
 #SBATCH --time=14-00:00:00
 #SBATCH --gpus-per-node=1
 #SBATCH --ntasks=1 --cpus-per-task=16
-#SBATCH --mem=64G
+#SBATCH --mem=32G
 #SBATCH --partition=a100-80gb
-#SBATCH --job-name={{task_name}}-{{generation_name}}
+#SBATCH --job-name={{task_name}}
 
 unset PYTHONPATH
 
