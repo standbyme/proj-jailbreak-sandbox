@@ -61,7 +61,6 @@ def main():
     ]:
         for generation_name in [
             # "PAIR",
-            # "TAP",
             "Cipher",
             "DeepInception",
             "GPTFuzzer",

@@ -139,7 +139,7 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["PAIR", "TAP", "Cipher", "DeepInception", "GPTFuzzer", "ICA"],
+        choices=["PAIR", "Cipher", "DeepInception", "GPTFuzzer", "ICA"],
     )
     parser.add_argument(
         "--dataset_name",

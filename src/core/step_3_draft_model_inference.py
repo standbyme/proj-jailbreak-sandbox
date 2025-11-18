@@ -124,7 +124,6 @@ if __name__ == "__main__":
             "GCG",
             "AutoDAN",
             "PAIR",
-            "TAP",
             "Cipher",
             "DeepInception",
             "GPTFuzzer",
