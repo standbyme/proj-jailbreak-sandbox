@@ -116,7 +116,15 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["GCG", "AutoDAN"],
+        choices=[
+            "GCG",
+            "AutoDAN",
+            "PAIR",
+            "Cipher",
+            "DeepInception",
+            "GPTFuzzer",
+            "ICA",
+        ],
     )
     parser.add_argument(
         "--dataset_name",
@@ -158,5 +166,8 @@ if __name__ == "__main__":
 
     guard = get_guard(guard_name)
 
-    for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+    # for draft_number in [5, 10, 15, 20, 25, 30, 35]:
+    #     main()
+
+    for draft_number in [20]:
         main()

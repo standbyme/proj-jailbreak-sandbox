@@ -3,8 +3,13 @@ count: 50
 
 matrix:
   generation_name:
-    - AutoDAN
-    - GCG
+    # - AutoDAN
+    # - GCG
+    - Cipher
+    - DeepInception
+    - GPTFuzzer
+    - ICA
+    - PAIR
   dataset_name:
     - RPAB
   target_model_name:
