@@ -2,7 +2,6 @@ import argparse
 import pickle
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
 
 from tqdm import tqdm
 
@@ -90,7 +89,15 @@ if __name__ == "__main__":
         "--generation_name",
         type=str,
         required=True,
-        choices=["GCG", "AutoDAN"],
+        choices=[
+            "GCG",
+            "AutoDAN",
+            "PAIR",
+            "Cipher",
+            "DeepInception",
+            "GPTFuzzer",
+            "ICA",
+        ],
     )
     parser.add_argument(
         "--dataset_name",
