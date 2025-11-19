@@ -20,16 +20,16 @@ module load cuda/12.6.0.lua
 
 unset PYTHONPATH
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 5
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 5
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 10
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 10
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 15
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 15
 
 uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 20
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 25
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 25
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 30
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 30
 
-uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 35
+# uv run ../src/core/step_3_draft_model_inference.py --slurm_unit_index "$SLURM_ARRAY_TASK_ID" --generation_name {{ generation_name }} --dataset_name {{ dataset_name }} --target_model_name {{ target_model_name }} --draft_model_name {{ draft_model_name }} --draft_number 35

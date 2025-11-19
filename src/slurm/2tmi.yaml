@@ -5,15 +5,14 @@ matrix:
   generation_name:
     # - AutoDAN
     # - GCG
-    # - Cipher
-    # - DeepInception
+    - Cipher
+    - DeepInception
     # - GPTFuzzer
-    # - ICA
+    - ICA
     - PAIR
-    # - TAP
   dataset_name:
     - RPAB
   target_model_name:
-    # - Meta-Llama-3-70B-Instruct-AWQ
-    # - Qwen1.5-72B-Chat-AWQ
-    - Phi-3-medium-128k-instruct
+    - Meta-Llama-3-70B-Instruct-AWQ
+    - Qwen1.5-72B-Chat-AWQ
+    # - Phi-3-medium-128k-instruct

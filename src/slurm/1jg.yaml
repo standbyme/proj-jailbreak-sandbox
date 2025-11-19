@@ -3,16 +3,15 @@ count: 1
 
 matrix:
   generation_name:
-    - PAIR
-    # - TAP
-    - Cipher
-    - DeepInception
-    # - GPTFuzzer
-    - ICA
+    # - PAIR
+    # - Cipher
+    # - DeepInception
+    - GPTFuzzer
+    # - ICA
   dataset_name:
     - RPAB
     # - mini_RPAB
   target_model_name:
-    # - Meta-Llama-3-70B-Instruct-AWQ
-    # - Qwen1.5-72B-Chat-AWQ
-    - Phi-3-medium-128k-instruct
+    - Meta-Llama-3-70B-Instruct-AWQ
+    - Qwen1.5-72B-Chat-AWQ
+    # - Phi-3-medium-128k-instruct
