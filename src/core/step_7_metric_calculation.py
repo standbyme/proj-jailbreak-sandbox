@@ -431,7 +431,15 @@ def main():
             "Qwen1.5-72B-Chat-AWQ",
             "Phi-3-medium-128k-instruct",
         ]:
-            for generation_name in ["AutoDAN", "GCG"]:
+            for generation_name in [
+                "GCG",
+                "AutoDAN",
+                "PAIR",
+                "Cipher",
+                "DeepInception",
+                "GPTFuzzer",
+                "ICA",
+            ]:
                 for draft_model_name in ["opt-125m-AWQ", "SmolLM-135M"]:
                     step_2_result_path = (
                         Path().cwd()
