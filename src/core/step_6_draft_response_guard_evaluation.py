@@ -91,6 +91,8 @@ def main():
     ) as f:
         step_3_pickle_data = pickle.load(f)
 
+    if (result_path / f"{slurm_unit_index}.pkl").exists():
+        return
     handle_intent(step_3_pickle_data, result_path, guard)
 
 
@@ -156,7 +158,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     print(args)
-    slurm_unit_index = args.slurm_unit_index
+    # slurm_unit_index = args.slurm_unit_index
     target_model_name = args.target_model_name
     generation_name = args.generation_name
     dataset_name = args.dataset_name
@@ -170,5 +172,6 @@ if __name__ == "__main__":
     # for draft_number in [5, 10, 15, 20, 25, 30, 35]:
     #     main()
 
-    for draft_number in [20]:
-        main()
+    for slurm_unit_index in range(50):
+        for draft_number in [20]:
+            main()
