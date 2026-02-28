@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-#SBATCH --mail-user=anonymoush@purdue.edu
+#SBATCH --mail-user=anonymoush@anonymousu.edu
 #SBATCH --mail-type=END
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=REQUEUE
