@@ -248,20 +248,6 @@ details.
 
 Released under the LICENSE in this repository for academic use.
 
-## 10. Citation
-
-If you use this artifact, please cite the paper:
-
-```bibtex
-@inproceedings{cai2026sandbox,
-  title     = {Exploring and Developing a Pre-Model Safeguard with Draft Models},
-  author    = {Cai, Hongyu and Arunasalam, Arjun and Liang, Yiming and
-               Bianchi, Antonio and Celik, Z. Berkay},
-  booktitle = {Proceedings of the ACM Conference},
-  year      = {2026},
-}
-```
-
 ## 11. Contact
 
 Hongyu Cai &lt;hongyu@purdue.edu&gt; — for questions related to the
